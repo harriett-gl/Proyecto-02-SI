@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Administración | TechMarket
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+
+<body>
+
+<!-- =========================================
+     HEADER DEL ADMINISTRADOR
+========================================= -->
+
+<header>
+
+    <a href="/admin" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/admin">
+            Productos
+        </a>
+
+        <a href="/" target="_blank">
+            Ver tienda
+        </a>
+
+        <a
+            href="/admin/logout"
+            class="cerrar-sesion"
+        >
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================================
+     CONTENIDO PRINCIPAL
+========================================= -->
+
+<main class="admin-container">
+
+
+    <!-- =====================================
+         TÍTULO
+    ====================================== -->
+
+    <div class="admin-titulo">
+
+        <p class="admin-etiqueta">
+            PANEL DE ADMINISTRACIÓN
+        </p>
+
+        <h1>
+            Gestión de productos
+        </h1>
+
+        <p>
+            Agrega, modifica y elimina productos
+            del catálogo de TechMarket.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================
+         AGREGAR PRODUCTO
+    ====================================== -->
+
+    <section class="admin-seccion">
+
+        <div class="admin-seccion-titulo">
+
+            <div>
+
+                <p class="admin-mini-etiqueta">
+                    NUEVO PRODUCTO
+                </p>
+
+                <h2>
+                    Agregar producto
+                </h2>
+
+            </div>
+
+            <div class="admin-icono">
+                ＋
+            </div>
+
+        </div>
+
+
+        <form
+            action="/admin/agregar"
+            method="POST"
+            class="formulario-producto"
+        >
+
+            <div>
+
+                <label for="nombre">
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Ej. Monitor Gamer"
+                    required
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="descripcion">
+                    Descripción
+                </label>
+
+                <input
+                    type="text"
+                    id="descripcion"
+                    name="descripcion"
+                    placeholder="Descripción del producto"
+                    required
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="precio">
+                    Precio
+                </label>
+
+                <input
+                    type="number"
+                    id="precio"
+                    name="precio"
+                    step="0.01"
+                    min="0"
+                    placeholder="0.00"
+                    required
+                >
+
+            </div>
+
+
+            <div>
+
+                <label for="stock">
+                    Stock
+                </label>
+
+                <input
+                    type="number"
+                    id="stock"
+                    name="stock"
+                    min="0"
+                    placeholder="0"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="boton-admin"
+            >
+                + Agregar producto
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================
+         PRODUCTOS EXISTENTES
+    ====================================== -->
+
+    <section class="admin-seccion">
+
+        <div class="admin-seccion-titulo">
+
+            <div>
+
+                <p class="admin-mini-etiqueta">
+                    INVENTARIO
+                </p>
+
+                <h2>
+                    Productos existentes
+                </h2>
+
+            </div>
+
+            <div class="admin-contador">
+                {{ productos|length }} productos
+            </div>
+
+        </div>
+
+
+        {% if productos %}
+
+        <div class="tabla-contenedor">
+
+            <table class="tabla-productos">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Producto
+                        </th>
+
+                        <th>
+                            Descripción
+                        </th>
+
+                        <th>
+                            Precio
+                        </th>
+
+                        <th>
+                            Stock
+                        </th>
+
+                        <th>
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for producto in productos %}
+
+                    <tr>
+
+                        <!-- ID -->
+
+                        <td class="producto-id">
+
+                            #{{ producto.id }}
+
+                        </td>
+
+
+                        <!-- FORMULARIO DE EDICIÓN -->
+
+                        <td colspan="5">
+
+                            <div class="fila-admin">
+
+
+                                <form
+                                    action="/admin/editar/{{ producto.id }}"
+                                    method="POST"
+                                    class="fila-edicion"
+                                >
+
+                                    <!-- NOMBRE -->
+
+                                    <input
+                                        type="text"
+                                        name="nombre"
+                                        value="{{ producto.nombre }}"
+                                        aria-label="Nombre del producto"
+                                        required
+                                    >
+
+
+                                    <!-- DESCRIPCIÓN -->
+
+                                    <input
+                                        type="text"
+                                        name="descripcion"
+                                        value="{{ producto.descripcion }}"
+                                        aria-label="Descripción del producto"
+                                        required
+                                    >
+
+
+                                    <!-- PRECIO -->
+
+                                    <input
+                                        type="number"
+                                        name="precio"
+                                        step="0.01"
+                                        min="0"
+                                        value="{{ producto.precio }}"
+                                        aria-label="Precio"
+                                        required
+                                    >
+
+
+                                    <!-- STOCK -->
+
+                                    <input
+                                        type="number"
+                                        name="stock"
+                                        min="0"
+                                        value="{{ producto.stock }}"
+                                        aria-label="Stock"
+                                        required
+                                    >
+
+
+                                    <!-- GUARDAR -->
+
+                                    <button
+                                        type="submit"
+                                        class="editar"
+                                    >
+                                        Guardar
+                                    </button>
+
+                                </form>
+
+
+                                <!-- ELIMINAR -->
+
+                                <form
+                                    action="/admin/eliminar/{{ producto.id }}"
+                                    method="POST"
+                                    class="form-eliminar"
+                                    onsubmit="return confirm(
+                                        '¿Seguro que deseas eliminar este producto?'
+                                    );"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="eliminar"
+                                    >
+                                        Eliminar
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+            <div class="admin-vacio">
+
+                <div class="admin-vacio-icono">
+                    📦
+                </div>
+
+                <h3>
+                    No hay productos
+                </h3>
+
+                <p>
+                    Agrega tu primer producto utilizando
+                    el formulario de arriba.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+</main>
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Panel privado de administración.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+services:
+
+  db:
+    image: mysql:8.4
+    container_name: techmarket-db
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+
+    container_name: techmarket-api
+    restart: unless-stopped
+
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "5001:5001"
+
+    depends_on:
+      - db
+
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+
+    container_name: techmarket-web
+    restart: unless-stopped
+
+    environment:
+      API_URL: http://api:5001
+      SECRET_KEY: ${SECRET_KEY}
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - api
+
+
+volumes:
+  mysql_data:

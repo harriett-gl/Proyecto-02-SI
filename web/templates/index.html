@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <a href="{{ url_for('inicio') }}" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+        <a href="{{ url_for('inicio') }}">Inicio</a>
+
+        <a href="{{ url_for('inicio') }}#productos">Productos</a>
+
+        {% if usuario %}
+
+            {% if usuario.rol == 'cliente' %}
+
+                <a href="{{ url_for('carrito') }}">
+                    🛒 Carrito ({{ cantidad_carrito }})
+                </a>
+
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}">
+                Cerrar sesión
+            </a>
+
+        {% else %}
+
+            <a href="{{ url_for('login') }}" class="btn-cuenta">
+                👤 Iniciar sesión
+            </a>
+
+            <a href="{{ url_for('carrito') }}">
+                🛒 Carrito ({{ cantidad_carrito }})
+            </a>
+
+        {% endif %}
+
+    </nav>
+
+</header>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="hero-contenido">
+
+        <p class="hero-etiqueta">
+            ✦ TECNOLOGÍA PARA TODOS
+        </p>
+
+        <h1>
+            Encuentra la tecnología
+            <span>que necesitas.</span>
+        </h1>
+
+        <p class="hero-descripcion">
+            Monitores, teclados, audífonos,
+            componentes y mucho más.
+        </p>
+
+    </div>
+
+    <div class="hero-decoracion">
+
+        <div class="hero-circulo circulo-1"></div>
+        <div class="hero-circulo circulo-2"></div>
+
+        <div class="hero-icono">
+            ✦
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PRODUCTOS
+========================= -->
+
+<main id="productos" class="productos-seccion">
+
+    <div class="productos-encabezado">
+
+        <p class="categoria">
+            NUESTRO CATÁLOGO
+        </p>
+
+        <h2>
+            Productos destacados
+        </h2>
+
+        <p>
+            Explora nuestra selección de tecnología.
+        </p>
+
+    </div>
+
+
+    {% if error %}
+
+        <div class="mensaje-error">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+
+    <div class="productos-grid">
+
+        {% for producto in productos %}
+
+        <article class="producto-card">
+
+            <!-- IMAGEN / ICONO DEL PRODUCTO -->
+
+            <a
+                href="{{ url_for('producto', id=producto.id) }}"
+                class="producto-imagen"
+            >
+
+                {% set nombre = producto.nombre|lower %}
+
+                {% if 'monitor' in nombre %}
+
+                    <span class="producto-icono">🖥️</span>
+
+                {% elif 'teclado' in nombre %}
+
+                    <span class="producto-icono">⌨️</span>
+
+                {% elif 'audifono' in nombre
+                    or 'audífono' in nombre %}
+
+                    <span class="producto-icono">🎧</span>
+
+                {% elif 'mouse' in nombre %}
+
+                    <span class="producto-icono">🖱️</span>
+
+                {% elif 'webcam' in nombre
+                    or 'camara' in nombre
+                    or 'cámara' in nombre %}
+
+                    <span class="producto-icono">📷</span>
+
+                {% elif 'fuente' in nombre %}
+
+                    <span class="producto-icono">🔌</span>
+
+                {% elif 'laptop' in nombre
+                    or 'computadora' in nombre %}
+
+                    <span class="producto-icono">💻</span>
+
+                {% else %}
+
+                    <span class="producto-icono">⚙️</span>
+
+                {% endif %}
+
+            </a>
+
+
+            <!-- INFORMACIÓN -->
+
+            <div class="producto-contenido">
+
+                <a
+                    href="{{ url_for('producto', id=producto.id) }}"
+                    class="producto-nombre-link"
+                >
+                    <h3>
+                        {{ producto.nombre }}
+                    </h3>
+                </a>
+
+
+                <p class="producto-descripcion">
+                    {{ producto.descripcion }}
+                </p>
+
+
+                <div class="producto-separador"></div>
+
+
+                <div class="producto-precio-stock">
+
+                    <strong class="producto-precio">
+                        Q{{ "%.2f"|format(
+                            producto.precio|float
+                        ) }}
+                    </strong>
+
+
+                    {% if producto.stock > 0 %}
+
+                        <span class="stock disponible-stock">
+                            Stock: {{ producto.stock }}
+                        </span>
+
+                    {% else %}
+
+                        <span class="stock agotado-stock">
+                            Agotado
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('producto', id=producto.id) }}"
+                    class="ver-detalles"
+                >
+                    Ver detalles
+                    <span>→</span>
+                </a>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Productos tecnológicos y soluciones para ti.
+    </p>
+
+</footer>
+
+</body>
+</html>

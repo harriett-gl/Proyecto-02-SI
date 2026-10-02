@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Carrito | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<header>
+
+    <a href="/" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="{{ url_for('inicio') }}">
+            Inicio
+        </a>
+
+        <a href="{{ url_for('inicio') }}#productos">
+            Productos
+        </a>
+
+        <a
+            href="{{ url_for('carrito') }}"
+            class="carrito-nav"
+        >
+            🛒 Carrito ({{ cantidad_carrito }})
+        </a>
+
+        {% if usuario %}
+
+            <span>
+                Hola, {{ usuario.nombre }}
+            </span>
+
+            <a href="{{ url_for('logout') }}">
+                Cerrar sesión
+            </a>
+
+        {% else %}
+
+            <a href="{{ url_for('login') }}">
+                Iniciar sesión
+            </a>
+
+        {% endif %}
+
+    </nav>
+
+</header>
+
+
+<main class="carrito-container">
+
+    <a
+        href="{{ url_for('inicio') }}#productos"
+        class="volver"
+    >
+        ← Continuar comprando
+    </a>
+
+
+    <div class="carrito-titulo">
+
+        <p class="categoria">
+            TECHMARKET
+        </p>
+
+        <h1>
+            Tu carrito
+        </h1>
+
+        <p>
+            Revisa tus productos antes de realizar
+            el pedido.
+        </p>
+
+    </div>
+
+
+    {% if productos %}
+
+    <div class="carrito-layout">
+
+
+        <section class="carrito-productos">
+
+            {% for producto in productos %}
+
+            <article class="carrito-item">
+
+                <div class="carrito-imagen">
+
+                    {% set nombre = producto.nombre|lower %}
+
+                    {% if 'monitor' in nombre %}
+
+                        🖥️
+
+                    {% elif 'teclado' in nombre %}
+
+                        ⌨️
+
+                    {% elif 'audifono' in nombre
+                        or 'audífono' in nombre %}
+
+                        🎧
+
+                    {% elif 'mouse' in nombre %}
+
+                        🖱️
+
+                    {% elif 'webcam' in nombre
+                        or 'camara' in nombre
+                        or 'cámara' in nombre %}
+
+                        📷
+
+                    {% elif 'fuente' in nombre %}
+
+                        🔌
+
+                    {% elif 'laptop' in nombre
+                        or 'computadora' in nombre %}
+
+                        💻
+
+                    {% else %}
+
+                        ⚙️
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="carrito-info">
+
+                    <a
+                        href="{{ url_for(
+                            'producto',
+                            id=producto.id
+                        ) }}"
+                    >
+
+                        <h3>
+                            {{ producto.nombre }}
+                        </h3>
+
+                    </a>
+
+
+                    <p>
+                        {{ producto.descripcion }}
+                    </p>
+
+
+                    <strong class="precio-carrito">
+
+                        Q{{ "%.2f"|format(
+                            producto.precio|float
+                        ) }}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="carrito-cantidad">
+
+                    <form
+                        action="{{ url_for(
+                            'actualizar_carrito',
+                            id=producto.id
+                        ) }}"
+                        method="POST"
+                    >
+
+                        <label>
+                            Cantidad
+                        </label>
+
+                        <input
+                            type="number"
+                            name="cantidad"
+                            min="1"
+                            max="{{ producto.stock }}"
+                            value="{{ producto.cantidad }}"
+                        >
+
+                        <button
+                            type="submit"
+                            class="actualizar-carrito"
+                        >
+                            Actualizar
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <div class="carrito-subtotal">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong>
+
+                        Q{{ "%.2f"|format(
+                            producto.subtotal
+                        ) }}
+
+                    </strong>
+
+
+                    <form
+                        action="{{ url_for(
+                            'eliminar_carrito',
+                            id=producto.id
+                        ) }}"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="eliminar-carrito"
+                        >
+                            Eliminar
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+
+            <form
+                action="{{ url_for('vaciar_carrito') }}"
+                method="POST"
+            >
+
+                <button
+                    type="submit"
+                    class="vaciar-carrito"
+                >
+                    Vaciar carrito
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <aside class="resumen-compra">
+
+            <h2>
+                Resumen
+            </h2>
+
+
+            <div class="resumen-linea">
+
+                <span>
+                    Productos
+                </span>
+
+                <span>
+                    {{ cantidad_carrito }}
+                </span>
+
+            </div>
+
+
+            <div class="resumen-linea envio">
+
+                <span>
+                    Envío
+                </span>
+
+                <span>
+                    Gratis
+                </span>
+
+            </div>
+
+
+            <div class="resumen-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    Q{{ "%.2f"|format(total) }}
+                </strong>
+
+            </div>
+
+
+            {% if usuario %}
+
+                <form
+                    action="{{ url_for('realizar_pedido') }}"
+                    method="POST"
+                >
+
+                    <button
+                        type="submit"
+                        class="realizar-pedido"
+                    >
+                        Realizar pedido
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <a
+                    href="{{ url_for('login') }}"
+                    class="realizar-pedido"
+                >
+                    Inicia sesión para comprar
+                </a>
+
+            {% endif %}
+
+
+            <p class="pedido-aviso">
+                El pedido todavía no será cobrado.
+            </p>
+
+        </aside>
+
+    </div>
+
+
+    {% else %}
+
+
+    <section class="carrito-vacio">
+
+        <div>
+            🛒
+        </div>
+
+        <h2>
+            Tu carrito está vacío
+        </h2>
+
+        <p>
+            Agrega productos para comenzar tu compra.
+        </p>
+
+        <a
+            href="{{ url_for('inicio') }}#productos"
+            class="comprar-productos"
+        >
+            Ver productos
+        </a>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Productos tecnológicos y soluciones para ti.
+    </p>
+
+</footer>
+
+</body>
+</html>

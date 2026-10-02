@@ -1,0 +1,419 @@
+# 🛒 TechMarket
+
+Proyecto desarrollado para el curso de **Seguridad Informática**.
+
+TechMarket simula una tienda de productos tecnológicos utilizando una arquitectura separada en tres servicios principales:
+
+- 🌐 Aplicación WEB
+- ⚙️ API REST
+- 🗄️ Base de datos MySQL
+
+La aplicación fue preparada con Docker para facilitar su despliegue e integración con la infraestructura de seguridad del proyecto.
+
+---
+
+## 👩🏻‍💻 Desarrollo
+
+**Desarrolladora:** Harriett Guzmán
+
+Esta parte del proyecto incluye:
+
+- Desarrollo del sitio WEB.
+- Desarrollo de API REST.
+- CRUD de productos.
+- Registro de usuarios.
+- Inicio y cierre de sesión.
+- Roles de cliente y administrador.
+- Carrito de compras.
+- Creación de pedidos.
+- Validación de stock.
+- Actualización automática del inventario.
+- Conexión WEB → API.
+- Conexión API → MySQL.
+- Contenedores Docker para WEB, API y DB.
+
+---
+
+# 📁 Estructura
+
+```text
+TechMarket/
+│
+├── web/
+│   ├── app.py
+│   ├── Dockerfile
+│   ├── templates/
+│   └── static/
+│
+├── api/
+│   ├── app.py
+│   └── Dockerfile
+│
+├── database/
+│   └── init.sql
+│
+├── docker-compose.yml
+├── .env
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+---
+
+# 🏗️ Arquitectura
+
+El flujo de comunicación utilizado durante el desarrollo es:
+
+```text
+Usuario
+   │
+   ▼
+WEB - Flask
+   │
+   │ HTTP / REST
+   ▼
+API - Flask
+   │
+   │ MySQL
+   ▼
+Base de Datos
+```
+
+La aplicación WEB no realiza consultas directamente a la base de datos.
+
+Las consultas son realizadas mediante:
+
+```text
+WEB → API → DB
+```
+
+Esto permite separar las responsabilidades de cada servicio y facilita la integración posterior con los controles de seguridad del proyecto.
+
+---
+
+# 🐳 Docker
+
+El proyecto utiliza Docker Compose para ejecutar:
+
+```text
+techmarket-web
+techmarket-api
+techmarket-db
+```
+
+Puertos utilizados durante el desarrollo:
+
+| Servicio | Puerto |
+|---|---:|
+| WEB | 8000 |
+| API | 5001 |
+| MySQL | 3306 |
+
+---
+
+# ⚙️ Configuración
+
+## 1. Clonar el repositorio
+
+```bash
+git clone URL_DEL_REPOSITORIO
+```
+
+Entrar a la carpeta:
+
+```bash
+cd TechMarket
+```
+
+---
+
+## 2. Crear archivo `.env`
+
+Copiar:
+
+```text
+.env.example
+```
+
+y crear:
+
+```text
+.env
+```
+
+Configurar las variables correspondientes.
+
+Ejemplo:
+
+```env
+MYSQL_ROOT_PASSWORD=contraseña_segura
+DB_HOST=db
+DB_PORT=3306
+DB_NAME=techmarket
+DB_USER=techmarket_user
+DB_PASSWORD=contraseña_segura
+SECRET_KEY=clave_secreta
+API_URL=http://api:5001
+```
+
+No se recomienda subir el archivo `.env` al repositorio.
+
+---
+
+# 🚀 Ejecutar TechMarket
+
+Construir e iniciar todos los servicios:
+
+```bash
+docker compose up -d --build
+```
+
+Comprobar los contenedores:
+
+```bash
+docker compose ps
+```
+
+Los servicios deben aparecer activos.
+
+---
+
+# 🌐 Aplicación WEB
+
+Abrir:
+
+```text
+http://localhost:8000
+```
+
+Desde la aplicación se puede:
+
+- Consultar productos.
+- Crear una cuenta.
+- Iniciar sesión.
+- Cerrar sesión.
+- Consultar detalles de productos.
+- Agregar productos al carrito.
+- Modificar cantidades.
+- Eliminar productos.
+- Crear pedidos.
+
+---
+
+# ⚙️ API REST
+
+Durante el entorno local de desarrollo la API está disponible en:
+
+```text
+http://localhost:5001
+```
+
+Ejemplo:
+
+```bash
+curl http://127.0.0.1:5001/productos
+```
+
+---
+
+# 📦 Productos
+
+La API implementa operaciones CRUD para productos.
+
+## Obtener productos
+
+```http
+GET /productos
+```
+
+## Obtener producto
+
+```http
+GET /productos/{id}
+```
+
+## Crear producto
+
+```http
+POST /productos
+```
+
+## Actualizar producto
+
+```http
+PUT /productos/{id}
+```
+
+## Eliminar producto
+
+```http
+DELETE /productos/{id}
+```
+
+---
+
+# 👤 Usuarios
+
+La aplicación permite registrar usuarios e iniciar sesión.
+
+```http
+POST /registro
+```
+
+```http
+POST /login
+```
+
+Los usuarios nuevos son registrados como clientes.
+
+El acceso administrativo depende del rol almacenado para el usuario.
+
+---
+
+# 🛒 Pedidos
+
+Los pedidos son creados mediante:
+
+```http
+POST /pedidos
+```
+
+El sistema:
+
+1. Identifica al usuario.
+2. Recibe los productos solicitados.
+3. Verifica la existencia del producto.
+4. Verifica el stock disponible.
+5. Calcula el total.
+6. Registra el pedido.
+7. Registra el detalle del pedido.
+8. Actualiza el inventario.
+
+---
+
+# 📉 Validación de stock
+
+TechMarket evita que un usuario compre una cantidad superior al inventario disponible.
+
+Por ejemplo, si existen:
+
+```text
+9 unidades
+```
+
+y se solicitan:
+
+```text
+20 unidades
+```
+
+la API rechaza la operación con un error de stock insuficiente.
+
+El pedido inválido no debe registrarse ni reducir el inventario.
+
+---
+
+# 🗄️ Base de datos
+
+La base de datos utiliza **MySQL 8.4**.
+
+La inicialización se realiza mediante:
+
+```text
+database/init.sql
+```
+
+Las tablas utilizadas incluyen las necesarias para:
+
+- Productos.
+- Usuarios.
+- Pedidos.
+- Detalle de pedidos.
+
+La API es responsable de comunicarse con MySQL.
+
+---
+
+# 🔐 Separación de servicios
+
+La arquitectura está diseñada para integrarse posteriormente en la infraestructura de Seguridad Informática.
+
+La arquitectura final del equipo contempla:
+
+```text
+Internet
+   │
+Firewall Perimetral
+   │
+WEB
+   │
+WAF
+   │
+API
+   │
+DB
+```
+
+La red interna también contará con Proxy Squid para aplicar restricciones a los equipos de empleados.
+
+---
+
+# 🧪 Pruebas realizadas
+
+Durante el desarrollo se comprobaron:
+
+- WEB → API.
+- API → MySQL.
+- Consulta de productos.
+- CRUD de productos.
+- Registro de usuarios.
+- Inicio de sesión.
+- Manejo de roles.
+- Carrito de compras.
+- Creación de pedidos.
+- Registro de detalle de pedidos.
+- Reducción automática del stock.
+- Rechazo de pedidos con stock insuficiente.
+- Ejecución de WEB, API y DB mediante Docker.
+
+---
+
+# 🔗 Integración
+
+El código desarrollado debe integrarse posteriormente con:
+
+- Firewall perimetral.
+- WAF.
+- Proxy Squid.
+- Máquinas virtuales de empleados.
+- Segmentación WAN / DMZ / LAN.
+
+La integración final será realizada en el entorno preparado por el equipo para la demostración del proyecto.
+
+---
+
+# 👥 Equipo
+
+## Harriett
+Desarrollo de WEB, API REST y base de datos.
+
+## Esly
+Infraestructura virtual, segmentación de red y firewall perimetral.
+
+## José
+WAF, Proxy Squid y controles de seguridad internos.
+
+---
+
+# ✅ Estado del desarrollo
+
+La parte de desarrollo de TechMarket se considera funcional cuando:
+
+```text
+WEB → API → DB
+```
+
+opera correctamente y la API permite realizar las operaciones requeridas sobre los datos.
+
+**Estado actual: desarrollo funcional y preparado para integración con la infraestructura de seguridad.**

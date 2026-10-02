@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Crear cuenta | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<header>
+
+    <a href="/" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+        <a href="/">Inicio</a>
+
+        <a href="/login">
+            Iniciar sesión
+        </a>
+    </nav>
+
+</header>
+
+
+<main class="auth-container">
+
+    <section class="auth-card">
+
+        <p class="admin-etiqueta">
+            ÚNETE A TECHMARKET
+        </p>
+
+        <h1>
+            Crear cuenta
+        </h1>
+
+        <p>
+            Regístrate para comenzar a comprar.
+        </p>
+
+
+        {% if error %}
+
+            <div class="mensaje-error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form method="POST">
+
+            <div>
+                <label>Nombre</label>
+
+                <input
+                    type="text"
+                    name="nombre"
+                    placeholder="Tu nombre"
+                    required
+                >
+            </div>
+
+
+            <div>
+                <label>Correo electrónico</label>
+
+                <input
+                    type="email"
+                    name="correo"
+                    placeholder="correo@ejemplo.com"
+                    required
+                >
+            </div>
+
+
+            <div>
+                <label>Contraseña</label>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Mínimo 6 caracteres"
+                    minlength="6"
+                    required
+                >
+            </div>
+
+
+            <div>
+                <label>Confirmar contraseña</label>
+
+                <input
+                    type="password"
+                    name="confirmar_password"
+                    placeholder="Repite tu contraseña"
+                    minlength="6"
+                    required
+                >
+            </div>
+
+
+            <button
+                type="submit"
+                class="boton-admin"
+            >
+                Crear cuenta
+            </button>
+
+        </form>
+
+
+        <p class="auth-enlace">
+
+            ¿Ya tienes una cuenta?
+
+            <a href="/login">
+                Iniciar sesión
+            </a>
+
+        </p>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>TechMarket</strong>
+
+    <p>
+        Tecnología para todos.
+    </p>
+
+</footer>
+
+</body>
+</html>
