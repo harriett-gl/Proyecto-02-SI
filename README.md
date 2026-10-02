@@ -341,23 +341,69 @@ La arquitectura está diseñada para integrarse posteriormente en la infraestruc
 
 La arquitectura final del equipo contempla:
 
+### Arquitectura principal
+
 ```text
-Internet
-   │
-Firewall Perimetral
-   │
-WEB
-   │
-WAF
-   │
-API
-   │
-DB
+                    ┌──────────────┐
+                    │   Internet   │
+                    └──────┬───────┘
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │ Firewall Perimetral │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │     WEB     │
+                    └──────┬──────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │     WAF     │
+                    └──────┬──────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │     API     │
+                    └──────┬──────┘
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │     DB      │
+                    └─────────────┘
 ```
 
-La red interna también contará con Proxy Squid para aplicar restricciones a los equipos de empleados.
+### Red interna
 
----
+Los equipos de los empleados se conectarán a la red interna y utilizarán **Proxy Squid** para aplicar políticas de navegación y restricciones de acceso.
+
+```text
+               ┌───────────────────┐
+               │     Empleados     │
+               └─────────┬─────────┘
+                         │
+                         ▼
+               ┌───────────────────┐
+               │    Proxy Squid    │
+               └─────────┬─────────┘
+                         │
+                         ▼
+               ┌───────────────────┐
+               │ Internet / WEB    │
+               └───────────────────┘
+```
+
+### Función de cada componente
+
+| Componente | Función |
+|---|---|
+| **Firewall Perimetral** | Controla el tráfico entre Internet, DMZ y red interna. |
+| **WEB** | Publica la aplicación web de TechMarket. |
+| **WAF** | Protege la aplicación frente a solicitudes web maliciosas. |
+| **API** | Gestiona productos, usuarios, autenticación y pedidos. |
+| **DB** | Almacena la información del sistema TechMarket. |
+| **Proxy Squid** | Aplica restricciones de navegación a los equipos de empleados. |
 
 # 🧪 Pruebas realizadas
 

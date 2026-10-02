@@ -224,46 +224,6 @@ def actualizar_producto(id):
         if conexion is not None and conexion.is_connected():
             conexion.close()
 
-            # =========================================================
-            # PRODUCTOS - ELIMINAR
-            # =========================================================
-
-            @app.route("/productos/<int:id>", methods=["DELETE"])
-            def eliminar_producto(id):
-                conexion = None
-                cursor = None
-
-                try:
-                    conexion = conectar_db()
-                    cursor = conexion.cursor()
-
-                    cursor.execute(
-                        "DELETE FROM productos WHERE id = %s",
-                        (id,)
-                    )
-
-                    conexion.commit()
-
-                    if cursor.rowcount == 0:
-                        return jsonify({
-                            "error": "Producto no encontrado"
-                        }), 404
-
-                    return jsonify({
-                        "mensaje": "Producto eliminado correctamente"
-                    }), 200
-
-                except Error as e:
-                    return jsonify({
-                        "error": str(e)
-                    }), 500
-
-                finally:
-                    if cursor is not None:
-                        cursor.close()
-
-                    if conexion is not None and conexion.is_connected():
-                        conexion.close()
 # =========================================================
 # PRODUCTOS - ELIMINAR
 # =========================================================
