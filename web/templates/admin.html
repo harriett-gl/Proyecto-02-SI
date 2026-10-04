@@ -9,22 +9,31 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Administración | TechMarket
-    </title>
+    <title>Administración | TechMarket</title>
 
     <link
         rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
+        href="{{ url_for('static', filename='base.css') }}"
     >
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='admin.css') }}"
+    >
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='admin_inventario.css') }}"
+    >
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='admin_ventas.css') }}"
+    >
+
 </head>
 
-
 <body>
-
-<!-- =========================================
-     HEADER DEL ADMINISTRADOR
-========================================= -->
 
 <header>
 
@@ -35,7 +44,19 @@
     <nav>
 
         <a href="/admin">
+            Administración
+        </a>
+
+        <a href="/admin/productos">
             Productos
+        </a>
+
+        <a href="/admin/clientes">
+            Clientes
+        </a>
+
+        <a href="/admin/pedidos">
+            Pedidos
         </a>
 
         <a href="/" target="_blank">
@@ -54,16 +75,12 @@
 </header>
 
 
-<!-- =========================================
-     CONTENIDO PRINCIPAL
-========================================= -->
-
 <main class="admin-container">
 
 
-    <!-- =====================================
-         TÍTULO
-    ====================================== -->
+    <!-- ========================================
+         ENCABEZADO
+    ========================================= -->
 
     <div class="admin-titulo">
 
@@ -72,39 +89,159 @@
         </p>
 
         <h1>
-            Gestión de productos
+            Gestión de TechMarket
         </h1>
 
         <p>
-            Agrega, modifica y elimina productos
-            del catálogo de TechMarket.
+            Administra productos, clientes, pedidos e inventario
+            desde un solo lugar.
         </p>
 
     </div>
 
 
-    <!-- =====================================
+    <!-- ========================================
+         ACCESOS DE ADMINISTRACIÓN
+    ========================================= -->
+
+    <section class="admin-accesos-grid">
+
+
+        <!-- PRODUCTOS -->
+
+        <a
+            href="/admin/productos"
+            class="admin-acceso-card"
+        >
+
+            <div class="admin-acceso-icono">
+                📦
+            </div>
+
+            <div class="admin-acceso-contenido">
+
+                <span class="admin-mini-etiqueta">
+                    CATÁLOGO
+                </span>
+
+                <h2>
+                    Productos
+                </h2>
+
+                <p>
+                    Consulta, edita o elimina los productos
+                    disponibles en la tienda.
+                </p>
+
+                <span class="admin-acceso-link">
+                    Administrar productos →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- CLIENTES -->
+
+        <a
+            href="/admin/clientes"
+            class="admin-acceso-card"
+        >
+
+            <div class="admin-acceso-icono">
+                👥
+            </div>
+
+            <div class="admin-acceso-contenido">
+
+                <span class="admin-mini-etiqueta">
+                    USUARIOS
+                </span>
+
+                <h2>
+                    Clientes
+                </h2>
+
+                <p>
+                    Consulta los clientes registrados y revisa
+                    su historial de compras.
+                </p>
+
+                <span class="admin-acceso-link">
+                    Ver clientes →
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <!-- PEDIDOS -->
+
+        <a
+            href="/admin/pedidos"
+            class="admin-acceso-card"
+        >
+
+            <div class="admin-acceso-icono">
+                🛍️
+            </div>
+
+            <div class="admin-acceso-contenido">
+
+                <span class="admin-mini-etiqueta">
+                    VENTAS
+                </span>
+
+                <h2>
+                    Pedidos
+                </h2>
+
+                <p>
+                    Revisa las compras realizadas, sus productos
+                    y el cliente asociado.
+                </p>
+
+                <span class="admin-acceso-link">
+                    Ver pedidos →
+                </span>
+
+            </div>
+
+        </a>
+
+
+    </section>
+
+
+    <!-- ========================================
          AGREGAR PRODUCTO
-    ====================================== -->
+    ========================================= -->
 
     <section class="admin-seccion">
 
-        <div class="admin-seccion-titulo">
+        <div class="nuevo-producto-header">
+
+            <div class="nuevo-producto-icono">
+                📦
+            </div>
 
             <div>
 
                 <p class="admin-mini-etiqueta">
-                    NUEVO PRODUCTO
+                    GESTIÓN DE CATÁLOGO
                 </p>
 
                 <h2>
-                    Agregar producto
+                    Agregar nuevo producto
                 </h2>
 
-            </div>
+                <p class="admin-descripcion-seccion">
+                    Completa la información para añadir un nuevo
+                    producto al catálogo de TechMarket.
+                </p>
 
-            <div class="admin-icono">
-                ＋
             </div>
 
         </div>
@@ -199,9 +336,9 @@
     </section>
 
 
-    <!-- =====================================
-         PRODUCTOS EXISTENTES
-    ====================================== -->
+    <!-- ========================================
+         INVENTARIO
+    ========================================= -->
 
     <section class="admin-seccion">
 
@@ -217,7 +354,13 @@
                     Productos existentes
                 </h2>
 
+                <p class="admin-descripcion-seccion">
+                    Consulta y actualiza el precio o las existencias
+                    de los productos registrados en TechMarket.
+                </p>
+
             </div>
+
 
             <div class="admin-contador">
                 {{ productos|length }} productos
@@ -228,163 +371,90 @@
 
         {% if productos %}
 
-        <div class="tabla-contenedor">
+            <div class="tabla-contenedor">
 
-            <table class="tabla-productos">
+                <table class="tabla-productos tabla-inventario">
 
-                <thead>
+                    <thead>
 
-                    <tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Acción</th>
+                        </tr>
 
-                        <th>
-                            ID
-                        </th>
-
-                        <th>
-                            Producto
-                        </th>
-
-                        <th>
-                            Descripción
-                        </th>
-
-                        <th>
-                            Precio
-                        </th>
-
-                        <th>
-                            Stock
-                        </th>
-
-                        <th>
-                            Acciones
-                        </th>
-
-                    </tr>
-
-                </thead>
+                    </thead>
 
 
-                <tbody>
+                    <tbody>
 
-                {% for producto in productos %}
+                        {% for producto in productos %}
 
-                    <tr>
+                            <tr>
 
-                        <!-- ID -->
+                                <td class="producto-id">
+                                    #{{ producto.id }}
+                                </td>
 
-                        <td class="producto-id">
+                                <td class="producto-nombre-tabla">
+                                    {{ producto.nombre }}
+                                </td>
 
-                            #{{ producto.id }}
+                                <td>
+                                    {{ producto.descripcion }}
+                                </td>
 
-                        </td>
+                                <td class="precio-tabla">
+                                    Q{{ "%.2f"|format(producto.precio|float) }}
+                                </td>
 
+                                <td>
 
-                        <!-- FORMULARIO DE EDICIÓN -->
+                                    {% if producto.stock|int == 0 %}
 
-                        <td colspan="5">
+                                        <span class="stock-estado stock-agotado">
+                                            Agotado
+                                        </span>
 
-                            <div class="fila-admin">
+                                    {% elif producto.stock|int <= 5 %}
 
+                                        <span class="stock-estado stock-bajo">
+                                            {{ producto.stock }} · Stock bajo
+                                        </span>
 
-                                <form
-                                    action="/admin/editar/{{ producto.id }}"
-                                    method="POST"
-                                    class="fila-edicion"
-                                >
+                                    {% else %}
 
-                                    <!-- NOMBRE -->
+                                        <span class="stock-estado stock-disponible">
+                                            {{ producto.stock }} unidades
+                                        </span>
 
-                                    <input
-                                        type="text"
-                                        name="nombre"
-                                        value="{{ producto.nombre }}"
-                                        aria-label="Nombre del producto"
-                                        required
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="/admin/inventario/{{ producto.id }}/editar"
+                                        class="boton-editar-inventario"
                                     >
+                                        ✎ Editar
+                                    </a>
 
+                                </td>
 
-                                    <!-- DESCRIPCIÓN -->
+                            </tr>
 
-                                    <input
-                                        type="text"
-                                        name="descripcion"
-                                        value="{{ producto.descripcion }}"
-                                        aria-label="Descripción del producto"
-                                        required
-                                    >
+                        {% endfor %}
 
+                    </tbody>
 
-                                    <!-- PRECIO -->
+                </table>
 
-                                    <input
-                                        type="number"
-                                        name="precio"
-                                        step="0.01"
-                                        min="0"
-                                        value="{{ producto.precio }}"
-                                        aria-label="Precio"
-                                        required
-                                    >
-
-
-                                    <!-- STOCK -->
-
-                                    <input
-                                        type="number"
-                                        name="stock"
-                                        min="0"
-                                        value="{{ producto.stock }}"
-                                        aria-label="Stock"
-                                        required
-                                    >
-
-
-                                    <!-- GUARDAR -->
-
-                                    <button
-                                        type="submit"
-                                        class="editar"
-                                    >
-                                        Guardar
-                                    </button>
-
-                                </form>
-
-
-                                <!-- ELIMINAR -->
-
-                                <form
-                                    action="/admin/eliminar/{{ producto.id }}"
-                                    method="POST"
-                                    class="form-eliminar"
-                                    onsubmit="return confirm(
-                                        '¿Seguro que deseas eliminar este producto?'
-                                    );"
-                                >
-
-                                    <button
-                                        type="submit"
-                                        class="eliminar"
-                                    >
-                                        Eliminar
-                                    </button>
-
-                                </form>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
+            </div>
 
 
         {% else %}
@@ -410,13 +480,8 @@
 
     </section>
 
-
 </main>
 
-
-<!-- =========================================
-     FOOTER
-========================================= -->
 
 <footer>
 
@@ -432,5 +497,4 @@
 
 
 </body>
-
 </html>

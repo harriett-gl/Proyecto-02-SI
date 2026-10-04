@@ -1,0 +1,576 @@
+/* =========================================================
+   TECHMARKET - INVENTARIO ADMINISTRATIVO
+========================================================= */
+
+
+/* =========================================================
+   TABLA DE INVENTARIO
+========================================================= */
+
+.tabla-inventario th:last-child,
+.tabla-inventario td:last-child {
+    text-align: center;
+    width: 115px;
+}
+
+
+.producto-nombre-tabla {
+    font-weight: 800;
+}
+
+
+.precio-tabla {
+    color: var(--morado) !important;
+    font-weight: 850 !important;
+}
+
+
+/* =========================================================
+   ESTADOS DEL STOCK
+========================================================= */
+
+.stock-estado {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 28px;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 850;
+
+    white-space: nowrap;
+}
+
+
+.stock-disponible {
+    background: #eefbf3;
+    color: #2e9b59;
+}
+
+
+.stock-bajo {
+    background: #fff7e8;
+    color: #c8831c;
+}
+
+
+.stock-agotado {
+    background: #fff0f0;
+    color: #d34a4a;
+}
+
+
+/* =========================================================
+   BOTÓN EDITAR INVENTARIO
+========================================================= */
+
+.boton-editar-inventario {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 78px;
+    min-height: 34px;
+
+    padding: 8px 13px;
+
+    background: var(--morado-claro);
+
+    border: 1px solid #e7e2ff;
+    border-radius: 9px;
+
+    color: var(--morado);
+
+    font-size: 11px;
+    font-weight: 850;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.boton-editar-inventario:hover {
+    transform: translateY(-1px);
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--morado),
+            var(--morado-2)
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 7px 18px rgba(104, 83, 232, 0.18);
+}
+
+
+/* =========================================================
+   TARJETA EDITAR INVENTARIO
+========================================================= */
+
+.inventario-editar-card {
+    width: min(720px, 100%);
+
+    margin: 0 auto;
+
+    padding: 30px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+
+    box-shadow:
+        0 12px 35px rgba(30, 35, 75, 0.06);
+}
+
+
+/* =========================================================
+   RESUMEN DEL PRODUCTO
+========================================================= */
+
+.inventario-producto-resumen {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    padding-bottom: 23px;
+
+    border-bottom: 1px solid var(--borde);
+}
+
+
+.inventario-producto-icono {
+    width: 65px;
+    height: 65px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--morado-claro);
+
+    border-radius: 16px;
+
+    font-size: 29px;
+}
+
+
+.inventario-producto-resumen h2 {
+    margin: 4px 0;
+
+    font-size: 21px;
+}
+
+
+.inventario-producto-resumen > div:last-child > p:last-child {
+    color: var(--gris);
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORMULARIO
+========================================================= */
+
+.form-inventario-editar {
+    margin-top: 26px;
+}
+
+
+.inventario-campos {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 18px;
+}
+
+
+.inventario-campo label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--texto);
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+.inventario-campo input {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 13px;
+
+    background: #fbfbfe;
+
+    border: 1px solid #dfe2ec;
+    border-radius: 10px;
+
+    color: var(--texto);
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    outline: none;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.inventario-campo input:focus {
+    background: #ffffff;
+
+    border-color: var(--morado);
+
+    box-shadow:
+        0 0 0 3px rgba(104, 83, 232, 0.08);
+}
+
+
+.inventario-campo small {
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--gris);
+
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   CAMPO PRECIO
+========================================================= */
+
+.campo-precio {
+    position: relative;
+}
+
+
+.campo-precio span {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--morado);
+
+    font-size: 12px;
+    font-weight: 850;
+}
+
+
+.campo-precio input {
+    padding-left: 29px;
+}
+
+
+/* =========================================================
+   AJUSTE RÁPIDO
+========================================================= */
+
+.ajuste-rapido {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 27px;
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #faf9ff,
+            #f5f2ff
+        );
+
+    border: 1px solid #e8e3ff;
+    border-radius: 14px;
+}
+
+
+.ajuste-rapido h3 {
+    margin: 4px 0;
+
+    font-size: 15px;
+}
+
+
+.ajuste-rapido > div:first-child > p:last-child {
+    color: var(--gris);
+
+    font-size: 10px;
+}
+
+
+.ajuste-stock-botones {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    flex-shrink: 0;
+}
+
+
+.boton-ajuste-stock {
+    min-width: 47px;
+    height: 36px;
+
+    padding: 0 11px;
+
+    background: #ffffff;
+
+    border: 1px solid #ded7ff;
+    border-radius: 9px;
+
+    color: var(--morado);
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 850;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.boton-ajuste-stock:hover {
+    transform: translateY(-1px);
+
+    background: var(--morado);
+
+    color: #ffffff;
+
+    box-shadow:
+        0 6px 14px rgba(104, 83, 232, 0.15);
+}
+
+
+/* =========================================================
+   RESUMEN DE VALORES ACTUALES
+========================================================= */
+
+.inventario-estado {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+
+.inventario-estado > div {
+    padding: 14px 16px;
+
+    background: #fafbff;
+
+    border: 1px solid #eceef5;
+    border-radius: 11px;
+}
+
+
+.inventario-estado-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--gris);
+
+    font-size: 9px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+
+.inventario-estado strong {
+    color: var(--texto);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ACCIONES
+========================================================= */
+
+.inventario-acciones {
+    display: grid;
+
+    grid-template-columns:
+        1.5fr
+        0.7fr;
+
+    gap: 11px;
+
+    margin-top: 24px;
+}
+
+
+.boton-guardar-inventario,
+.boton-cancelar-inventario {
+    height: 45px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 18px;
+
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 850;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.boton-guardar-inventario {
+    border: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--morado),
+            var(--morado-2)
+        );
+
+    color: #ffffff;
+
+    box-shadow:
+        0 8px 20px rgba(104, 83, 232, 0.18);
+}
+
+
+.boton-guardar-inventario:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 11px 25px rgba(104, 83, 232, 0.25);
+}
+
+
+.boton-cancelar-inventario {
+    background: #f7f5ff;
+
+    border: 1px solid #e3ddff;
+
+    color: var(--morado);
+
+    text-decoration: none;
+}
+
+
+.boton-cancelar-inventario:hover {
+    transform: translateY(-1px);
+
+    background: var(--morado-claro);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .inventario-campos,
+    .inventario-estado {
+        grid-template-columns: 1fr;
+    }
+
+
+    .ajuste-rapido {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .ajuste-stock-botones {
+        width: 100%;
+
+        flex-wrap: wrap;
+    }
+
+
+    .boton-ajuste-stock {
+        flex: 1;
+    }
+
+
+    .inventario-acciones {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .inventario-editar-card {
+        padding: 21px;
+    }
+
+
+    .inventario-producto-resumen {
+        align-items: flex-start;
+    }
+
+
+    .inventario-producto-icono {
+        width: 55px;
+        height: 55px;
+
+        font-size: 24px;
+    }
+
+}

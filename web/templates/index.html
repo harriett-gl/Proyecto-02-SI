@@ -7,10 +7,8 @@
 
     <title>TechMarket</title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='tienda.css') }}">
 </head>
 
 <body>
@@ -26,13 +24,26 @@
     </a>
 
     <nav>
-        <a href="{{ url_for('inicio') }}">Inicio</a>
 
-        <a href="{{ url_for('inicio') }}#productos">Productos</a>
+        <a href="{{ url_for('inicio') }}">
+            Inicio
+        </a>
+
+        <a href="{{ url_for('inicio') }}#productos">
+            Productos
+        </a>
 
         {% if usuario %}
 
             {% if usuario.rol == 'cliente' %}
+
+                <a href="{{ url_for('mis_pedidos') }}">
+                    Mis pedidos
+                </a>
+
+                <a href="{{ url_for('mi_cuenta') }}">
+                    Mi cuenta
+                </a>
 
                 <a href="{{ url_for('carrito') }}">
                     🛒 Carrito ({{ cantidad_carrito }})

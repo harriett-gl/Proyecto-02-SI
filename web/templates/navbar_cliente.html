@@ -1,0 +1,49 @@
+<header>
+    <a href="{{ url_for('inicio') }}" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+        <a href="{{ url_for('inicio') }}">
+            Inicio
+        </a>
+
+        <a href="{{ url_for('inicio') }}#productos">
+            Productos
+        </a>
+
+        {% if usuario %}
+
+            {% if usuario.rol == 'cliente' %}
+
+                <a href="{{ url_for('mis_pedidos') }}">
+                    📦 Mis pedidos
+                </a>
+
+                <a href="{{ url_for('mi_cuenta') }}">
+                    👤 Mi cuenta
+                </a>
+
+                <a href="{{ url_for('carrito') }}" class="carrito-nav">
+                    🛒 Carrito ({{ cantidad_carrito }})
+                </a>
+
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}">
+                Cerrar sesión
+            </a>
+
+        {% else %}
+
+            <a href="{{ url_for('login') }}" class="btn-cuenta">
+                👤 Iniciar sesión
+            </a>
+
+            <a href="{{ url_for('carrito') }}" class="carrito-nav">
+                🛒 Carrito ({{ cantidad_carrito }})
+            </a>
+
+        {% endif %}
+    </nav>
+</header>

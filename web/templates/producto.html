@@ -9,19 +9,16 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>{{ producto.nombre }} | TechMarket</title>
+    <title>
+        {{ producto.nombre }} | TechMarket
+    </title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='producto.css') }}">
 </head>
 
-<body>
 
-<!-- =========================
-     HEADER
-========================= -->
+<body>
 
 <header>
 
@@ -35,319 +32,217 @@
             Inicio
         </a>
 
-        <a href="/#productos">
-            Productos
+        <a href="/carrito">
+            Carrito
         </a>
 
-        <a href="/admin">
-            Administración
-        </a>
+        {% if usuario %}
 
-        <a
-            href="{{ url_for('carrito') }}"
-            class="carrito-nav"
-        >
-            🛒 Carrito ({{ cantidad_carrito }})
-        </a>
+            {% if usuario.rol == 'admin' %}
+                <a href="/admin">
+                    Administración
+                </a>
+            {% endif %}
+
+            <a href="/logout">
+                Cerrar sesión
+            </a>
+
+        {% else %}
+
+            <a href="/login">
+                Iniciar sesión
+            </a>
+
+            <a href="/registro">
+                Crear cuenta
+            </a>
+
+        {% endif %}
 
     </nav>
 
 </header>
 
 
-<!-- =========================
-     DETALLE DEL PRODUCTO
-========================= -->
+<main>
 
-<main class="detalle-container">
+    <div class="detalle-container">
 
-    <a
-        href="/#productos"
-        class="volver"
-    >
-        ← Volver a productos
-    </a>
+        <a href="/" class="volver">
+            ← Volver a productos
+        </a>
 
 
-    <section class="detalle-producto">
+        <section class="detalle-producto">
 
 
-        <!-- IMAGEN -->
+            <!-- =========================================
+                 IMAGEN / ICONO DEL PRODUCTO
+            ========================================== -->
 
-        <div class="detalle-imagen">
+            <div class="detalle-producto-imagen">
 
-            <div class="imagen-grande">
+                {% if 'Monitor' in producto.nombre %}
 
-    {% set nombre = producto.nombre|lower %}
+                    <span class="imagen-grande">
+                        🖥️
+                    </span>
 
-    {% if 'monitor' in nombre %}
-        🖥️
+                {% elif 'Teclado' in producto.nombre %}
 
-    {% elif 'teclado' in nombre %}
-        ⌨️
+                    <span class="imagen-grande">
+                        ⌨️
+                    </span>
 
-    {% elif 'audifono' in nombre or 'audífono' in nombre %}
-        🎧
+                {% elif 'Audifonos' in producto.nombre
+                        or 'Audífonos' in producto.nombre %}
 
-    {% elif 'mouse' in nombre %}
-        🖱️
+                    <span class="imagen-grande">
+                        🎧
+                    </span>
 
-    {% elif 'webcam' in nombre or 'camara' in nombre or 'cámara' in nombre %}
-        📷
+                {% elif 'Fuente' in producto.nombre %}
 
-    {% elif 'fuente' in nombre %}
-        🔌
+                    <span class="imagen-grande">
+                        🔌
+                    </span>
 
-    {% elif 'laptop' in nombre or 'computadora' in nombre %}
-        💻
+                {% else %}
 
-    {% else %}
-        ⚙️
-    {% endif %}
+                    <span class="imagen-grande">
+                        📦
+                    </span>
 
-</div>
-
-            <p>
-                Producto TechMarket
-            </p>
-
-        </div>
-
-
-        <!-- INFORMACIÓN -->
-
-        <div class="detalle-info">
-
-            <p class="categoria">
-                TECNOLOGÍA
-            </p>
-
-
-            <h1>
-                {{ producto.nombre }}
-            </h1>
-
-
-            <p class="detalle-descripcion">
-                {{ producto.descripcion }}
-            </p>
-
-
-            <!-- PRECIO -->
-
-            <div class="precio-detalle">
-
-                Q{{ "%.2f"|format(producto.precio|float) }}
+                {% endif %}
 
             </div>
 
 
-            <!-- DISPONIBILIDAD -->
+            <!-- =========================================
+                 INFORMACIÓN DEL PRODUCTO
+            ========================================== -->
 
-            {% if producto.stock > 0 %}
+            <div class="detalle-producto-info">
 
-                <div class="disponibilidad disponible">
+                <p class="producto-categoria">
+                    TECNOLOGÍA
+                </p>
 
-                    ✓ Disponible
 
-                    <span>
-                        {{ producto.stock }}
-                        unidades en existencia
-                    </span>
+                <h1>
+                    {{ producto.nombre }}
+                </h1>
+
+
+                <p class="detalle-descripcion">
+                    {{ producto.descripcion }}
+                </p>
+
+
+                <div class="detalle-precio">
+                    Q{{ "%.2f"|format(producto.precio|float) }}
+                </div>
+
+
+                <!-- =====================================
+                     DISPONIBILIDAD
+                ====================================== -->
+
+                {% if producto.stock|int > 0 %}
+
+                    <div class="detalle-stock disponible">
+                        ✓ Disponible · {{ producto.stock }} unidades en existencia
+                    </div>
+
+                {% else %}
+
+                    <div class="detalle-stock agotado">
+                        Producto agotado
+                    </div>
+
+                {% endif %}
+
+
+                <!-- =====================================
+                     ACERCA DEL PRODUCTO
+                ====================================== -->
+
+                <div class="acerca-producto">
+
+                    <h2>
+                        Acerca de este producto
+                    </h2>
+
+                    <p>
+                        {% if producto.detalle_producto %}
+                            {{ producto.detalle_producto }}
+                        {% else %}
+                            Producto tecnológico seleccionado por TechMarket.
+                        {% endif %}
+                    </p>
 
                 </div>
 
-            {% else %}
 
-                <div class="disponibilidad no-disponible">
+                <!-- =====================================
+                     AGREGAR AL CARRITO
+                ====================================== -->
 
-                    Producto agotado
+                <form
+                    action="/carrito/agregar/{{ producto.id }}"
+                    method="POST"
+                    class="form-agregar-carrito"
+                >
 
-                </div>
+                    <div>
 
-            {% endif %}
+                        <label for="cantidad">
+                            Cantidad
+                        </label>
+
+                        <input
+                            type="number"
+                            id="cantidad"
+                            name="cantidad"
+                            min="1"
+                            max="{{ producto.stock }}"
+                            value="1"
+                            required
+                        >
+
+                    </div>
 
 
-            <!-- CARACTERÍSTICAS -->
+                    <button
+                        type="submit"
+                        class="boton-comprar"
+                        {% if producto.stock|int <= 0 %}
+                            disabled
+                        {% endif %}
+                    >
+                        🛒 Agregar al carrito
+                    </button>
 
-            <div class="caracteristicas">
-
-                <h3>
-                    Acerca de este producto
-                </h3>
-
-                <ul>
-
-                    <li>
-                        Producto tecnológico seleccionado
-                        por TechMarket.
-                    </li>
-
-                    <li>
-                        Producto nuevo.
-                    </li>
-
-                    <li>
-                        Disponibilidad actualizada desde
-                        nuestro inventario.
-                    </li>
-
-                    <li>
-                        Gestión mediante nuestra
-                        plataforma TechMarket.
-                    </li>
-
-                </ul>
+                </form>
 
             </div>
 
+        </section>
 
-            <!-- =========================
-                 COMPRA
-            ========================= -->
-
-            {% if producto.stock > 0 %}
-
-            <form
-                action="{{ url_for(
-                    'agregar_carrito',
-                    id=producto.id
-                    ) }}"
-                method="POST"
-                class="zona-compra"
-            >
-
-                <label for="cantidad">
-                    Cantidad
-                </label>
-
-
-                <select
-                    id="cantidad"
-                    name="cantidad"
-                >
-
-                    {% for cantidad in range(
-                        1,
-                        [producto.stock, 10]|min + 1
-                    ) %}
-
-                        <option value="{{ cantidad }}">
-
-                            {{ cantidad }}
-
-                        </option>
-
-                    {% endfor %}
-
-                </select>
-
-
-                <button
-                    type="submit"
-                    class="boton-comprar"
-                >
-
-                    🛒 Agregar al carrito
-
-                </button>
-
-            </form>
-
-            {% else %}
-
-                <button
-                    type="button"
-                    class="boton-comprar"
-                    disabled
-                >
-
-                    Producto agotado
-
-                </button>
-
-            {% endif %}
-
-
-            <!-- =========================
-                 BENEFICIOS
-            ========================= -->
-
-            <div class="beneficios">
-
-
-                <div>
-
-                    🔒
-
-                    <span>
-
-                        <strong>
-                            Compra segura
-                        </strong>
-
-                        Plataforma protegida
-
-                    </span>
-
-                </div>
-
-
-                <div>
-
-                    📦
-
-                    <span>
-
-                        <strong>
-                            Disponibilidad
-                        </strong>
-
-                        Inventario actualizado
-
-                    </span>
-
-                </div>
-
-
-                <div>
-
-                    💻
-
-                    <span>
-
-                        <strong>
-                            TechMarket
-                        </strong>
-
-                        Tecnología para todos
-
-                    </span>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-    </section>
+    </div>
 
 </main>
 
 
-<!-- =========================
-     FOOTER
-========================= -->
-
 <footer>
 
     <strong>
-        TechMarket
+        Tech<span>Market</span>
     </strong>
 
     <p>
-        Productos tecnológicos y soluciones para ti.
+        Tecnología para todos.
     </p>
 
 </footer>

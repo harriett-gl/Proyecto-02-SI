@@ -1,0 +1,454 @@
+/* =========================================================
+   TECHMARKET - TIENDA
+========================================================= */
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    min-height: 390px;
+    padding: 70px max(8vw, 40px);
+
+    background:
+        linear-gradient(
+            120deg,
+            #252b60,
+            #49337d
+        );
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    overflow: hidden;
+}
+
+
+.hero-contenido {
+    max-width: 580px;
+
+    position: relative;
+    z-index: 2;
+}
+
+
+.hero-etiqueta {
+    margin-bottom: 20px;
+
+    color: #ddd8ff;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+
+.hero h1 {
+    max-width: 600px;
+
+    font-size: clamp(45px, 5vw, 68px);
+    line-height: .98;
+    letter-spacing: -3px;
+}
+
+
+.hero h1 span {
+    color: #9c85ff;
+}
+
+
+.hero-descripcion {
+    margin-top: 25px;
+
+    color: #d8d9e8;
+
+    font-size: 16px;
+}
+
+
+.hero-decoracion {
+    width: 260px;
+    height: 260px;
+
+    position: relative;
+}
+
+
+.hero-circulo {
+    position: absolute;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 50%;
+}
+
+
+.circulo-1 {
+    inset: 0;
+}
+
+
+.circulo-2 {
+    inset: 40px;
+
+    background: rgba(104, 83, 232, .10);
+}
+
+
+.hero-icono {
+    position: absolute;
+    inset: 0;
+
+    display: grid;
+    place-items: center;
+
+    color: #a993ff;
+
+    font-size: 38px;
+}
+
+
+/* =========================================================
+   SECCIÓN DE PRODUCTOS
+========================================================= */
+
+.productos-seccion {
+    width: min(1180px, calc(100% - 50px));
+
+    margin: 0 auto;
+    padding: 55px 0 75px;
+}
+
+
+.productos-encabezado {
+    margin-bottom: 30px;
+}
+
+
+.productos-encabezado .categoria {
+    color: var(--morado);
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+
+.productos-encabezado h2 {
+    margin-top: 5px;
+
+    font-size: 31px;
+    letter-spacing: -1px;
+}
+
+
+.productos-encabezado > p:last-child {
+    margin-top: 6px;
+
+    color: var(--gris);
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.productos-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(210px, 1fr));
+
+    gap: 22px;
+}
+
+
+/* =========================================================
+   TARJETA DE PRODUCTO
+========================================================= */
+
+.producto-card {
+    display: flex;
+    flex-direction: column;
+
+    padding: 14px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--borde);
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 25px rgba(30, 35, 75, .04);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+}
+
+
+.producto-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #ded8ff;
+
+    box-shadow:
+        0 15px 35px rgba(54, 43, 116, .10);
+}
+
+
+/* =========================================================
+   IMAGEN
+========================================================= */
+
+.producto-imagen {
+    height: 175px;
+
+    display: grid;
+    place-items: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f8f7ff,
+            #eeebff
+        );
+
+    border-radius: 14px;
+}
+
+
+.producto-imagen::before {
+    content: "";
+
+    width: 100px;
+    height: 100px;
+
+    position: absolute;
+
+    background:
+        rgba(126, 104, 238, .06);
+
+    border-radius: 50%;
+
+    transform: scale(0);
+
+    transition: transform .3s ease;
+}
+
+
+.producto-card:hover .producto-imagen::before {
+    transform: scale(1.6);
+}
+
+
+.producto-icono {
+    position: relative;
+    z-index: 1;
+
+    font-size: 55px;
+
+    transition:
+        transform .25s ease;
+}
+
+
+.producto-card:hover .producto-icono {
+    transform:
+        translateY(-3px)
+        scale(1.06);
+}
+
+
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+.producto-contenido {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 3px 2px 2px;
+}
+
+
+.producto-nombre-link {
+    color: var(--texto);
+
+    text-decoration: none;
+}
+
+
+.producto-card h3 {
+    margin-top: 18px;
+
+    color: var(--texto);
+
+    font-size: 18px;
+}
+
+
+.producto-descripcion {
+    min-height: 38px;
+
+    margin-top: 6px;
+
+    color: var(--gris);
+
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+
+.producto-separador {
+    display: none;
+}
+
+
+/* =========================================================
+   PRECIO Y STOCK
+========================================================= */
+
+.producto-precio-stock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 16px;
+}
+
+
+.producto-precio {
+    color: var(--morado);
+
+    font-size: 19px;
+    font-weight: 850;
+}
+
+
+.stock {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+.disponible-stock {
+    color: #4d8762;
+}
+
+
+.agotado-stock {
+    color: #c34f58;
+}
+
+
+/* =========================================================
+   BOTÓN VER DETALLES
+========================================================= */
+
+.ver-detalles {
+    width: 100%;
+    min-height: 40px;
+
+    margin-top: 15px;
+    padding: 10px 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #f1eeff,
+            #ebe7ff
+        );
+
+    border:
+        1px solid
+        rgba(104, 83, 232, .10);
+
+    border-radius: 10px;
+
+    color: var(--morado);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition:
+        transform .2s ease,
+        color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.ver-detalles span {
+    display: inline-block;
+
+    font-size: 15px;
+
+    transition:
+        transform .2s ease;
+}
+
+
+.ver-detalles:hover {
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--morado),
+            var(--morado-2)
+        );
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 18px rgba(104, 83, 232, .20);
+}
+
+
+.ver-detalles:hover span {
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .hero {
+        padding: 55px 25px;
+    }
+
+
+    .hero-decoracion {
+        display: none;
+    }
+
+
+    .productos-seccion {
+        width: calc(100% - 30px);
+    }
+
+}

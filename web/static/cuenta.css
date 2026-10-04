@@ -1,0 +1,391 @@
+/* =========================================================
+   TECHMARKET - MI CUENTA
+   ========================================================= */
+
+.cuenta-container {
+    width: min(100% - 40px, 1000px);
+    margin: 0 auto;
+    padding: 48px 0 80px;
+}
+
+.cuenta-titulo {
+    margin-bottom: 28px;
+}
+
+.cuenta-etiqueta {
+    margin: 0 0 6px;
+    color: #7255f5;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.cuenta-titulo h1 {
+    margin: 0;
+    color: #171b38;
+    font-size: 36px;
+    line-height: 1.1;
+}
+
+.cuenta-titulo > p:last-child {
+    margin: 9px 0 0;
+    color: #747b95;
+    font-size: 14px;
+}
+
+.perfil-card,
+.editar-cuenta-card {
+    background: #ffffff;
+    border: 1px solid #e5e7f1;
+    border-radius: 22px;
+    padding: 28px;
+    box-shadow: 0 15px 45px rgba(37, 41, 79, 0.06);
+}
+
+.perfil-superior,
+.editar-cuenta-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #ececf4;
+}
+
+.perfil-avatar {
+    width: 68px;
+    height: 68px;
+    flex: 0 0 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: linear-gradient(
+        135deg,
+        #6548ed,
+        #9175ff
+    );
+    color: white;
+    font-size: 28px;
+    font-weight: 800;
+    box-shadow: 0 10px 25px rgba(101, 72, 237, 0.2);
+}
+
+.perfil-superior h2,
+.editar-cuenta-header h2 {
+    margin: 3px 0 4px;
+    color: #171b38;
+    font-size: 24px;
+}
+
+.perfil-superior p {
+    margin: 0;
+    color: #777e96;
+}
+
+.perfil-datos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 24px 0;
+}
+
+.dato-cuenta {
+    padding: 17px;
+    background: #f8f7ff;
+    border: 1px solid #ece9ff;
+    border-radius: 15px;
+}
+
+.dato-cuenta span {
+    display: block;
+    margin-bottom: 5px;
+    color: #8a8fa5;
+    font-size: 12px;
+}
+
+.dato-cuenta strong {
+    color: #222640;
+    font-size: 15px;
+}
+
+.boton-editar-cuenta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    background: #eeeaff;
+    color: #684cec;
+    border-radius: 11px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.boton-editar-cuenta:hover {
+    background: #684cec;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.resumen-cuenta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 22px 0;
+}
+
+.resumen-item {
+    background: white;
+    border: 1px solid #e5e7f1;
+    border-radius: 18px;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(37, 41, 79, 0.04);
+}
+
+.resumen-icono {
+    width: 46px;
+    height: 46px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0edff;
+    border-radius: 14px;
+    font-size: 21px;
+}
+
+.resumen-item strong {
+    display: block;
+    color: #684cec;
+    font-size: 23px;
+}
+
+.resumen-item p {
+    margin: 5px 0 0;
+    color: #7d8399;
+    font-size: 13px;
+}
+
+.acciones-cuenta {
+    margin: 22px 0;
+}
+
+.accion-cuenta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: white;
+    border: 1px solid #e5e7f1;
+    border-radius: 17px;
+    color: inherit;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.accion-cuenta:hover {
+    border-color: #cfc6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(60, 48, 120, 0.07);
+}
+
+.accion-icono {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0edff;
+    border-radius: 14px;
+}
+
+.accion-cuenta div:nth-child(2) {
+    flex: 1;
+}
+
+.accion-cuenta strong {
+    color: #222640;
+}
+
+.accion-cuenta p {
+    margin: 4px 0 0;
+    color: #81869a;
+    font-size: 13px;
+}
+
+.accion-cuenta > span {
+    color: #7255f5;
+    font-size: 20px;
+}
+
+.zona-peligro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin-top: 28px;
+    padding: 24px;
+    background: #fffafa;
+    border: 1px solid #ffdede;
+    border-radius: 18px;
+}
+
+.zona-peligro-etiqueta {
+    color: #e85a67;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.zona-peligro h2 {
+    margin: 5px 0;
+    color: #29243a;
+    font-size: 19px;
+}
+
+.zona-peligro p {
+    max-width: 570px;
+    margin: 0;
+    color: #8b7f88;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.boton-eliminar-cuenta {
+    border: 1px solid #ffc6ca;
+    background: #fff0f1;
+    color: #db4653;
+    border-radius: 11px;
+    padding: 11px 17px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.boton-eliminar-cuenta:hover {
+    background: #db4653;
+    border-color: #db4653;
+    color: white;
+}
+
+.cuenta-editar-container {
+    max-width: 760px;
+}
+
+.volver-cuenta {
+    display: inline-flex;
+    margin-bottom: 24px;
+    padding: 9px 13px;
+    background: white;
+    border: 1px solid #ddd9f6;
+    border-radius: 9px;
+    color: #694def;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.form-cuenta {
+    padding-top: 25px;
+}
+
+.campo-cuenta {
+    margin-bottom: 20px;
+}
+
+.campo-cuenta label {
+    display: block;
+    margin-bottom: 8px;
+    color: #282d4a;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.campo-cuenta input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 14px 15px;
+    background: #fbfbfe;
+    border: 1px solid #dfe1ec;
+    border-radius: 11px;
+    color: #20243d;
+    font: inherit;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.campo-cuenta input:focus {
+    border-color: #8065f3;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(128, 101, 243, 0.08);
+}
+
+.acciones-form-cuenta {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.boton-guardar-cuenta {
+    flex: 1;
+    padding: 13px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(
+        90deg,
+        #6346ec,
+        #8b6cff
+    );
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.boton-cancelar-edicion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 22px;
+    background: #f1effb;
+    color: #5d5872;
+    border-radius: 11px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.cuenta-alerta-error {
+    margin-bottom: 20px;
+    padding: 14px 17px;
+    background: #fff1f2;
+    border: 1px solid #ffd0d4;
+    border-radius: 12px;
+    color: #d74754;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.nav-activo {
+    color: #7255f5 !important;
+}
+
+@media (max-width: 760px) {
+
+    .perfil-datos,
+    .resumen-cuenta {
+        grid-template-columns: 1fr;
+    }
+
+    .zona-peligro {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .boton-eliminar-cuenta {
+        width: 100%;
+    }
+
+    .acciones-form-cuenta {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Productos | TechMarket</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+
+
+<body>
+
+<header>
+
+    <a href="/admin" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/admin">
+            Administración
+        </a>
+
+        <a href="/admin/productos">
+            Productos
+        </a>
+
+        <a href="/" target="_blank">
+            Ver tienda
+        </a>
+
+        <a
+            href="/admin/logout"
+            class="cerrar-sesion"
+        >
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="admin-container">
+
+    <a
+        href="/admin"
+        class="volver-admin"
+    >
+        ← Volver al panel
+    </a>
+
+
+    <div class="admin-titulo">
+
+        <p class="admin-etiqueta">
+            CATÁLOGO
+        </p>
+
+        <h1>
+            Información de productos
+        </h1>
+
+        <p>
+            Selecciona un producto para modificar la información
+            adicional que aparece en su página pública.
+        </p>
+
+    </div>
+
+
+    {% if productos %}
+
+    <div class="admin-productos-grid">
+
+        {% for producto in productos %}
+
+        <article class="admin-producto-card">
+
+            <div class="admin-producto-icono">
+
+                {% if 'Monitor' in producto.nombre %}
+
+                    🖥️
+
+                {% elif 'Teclado' in producto.nombre %}
+
+                    ⌨️
+
+                {% elif 'Audifonos' in producto.nombre
+                        or 'Audífonos' in producto.nombre %}
+
+                    🎧
+
+                {% elif 'Fuente' in producto.nombre %}
+
+                    🔌
+
+                {% else %}
+
+                    📦
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="admin-producto-info">
+
+                <span class="admin-producto-id">
+                    PRODUCTO #{{ producto.id }}
+                </span>
+
+                <h2>
+                    {{ producto.nombre }}
+                </h2>
+
+                <p>
+                    {{ producto.descripcion }}
+                </p>
+
+
+                <div class="admin-producto-datos">
+
+                    <div>
+
+                        <span>
+                            Precio
+                        </span>
+
+                        <strong>
+                            Q{{ "%.2f"|format(producto.precio|float) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Stock
+                        </span>
+
+                        <strong>
+                            {{ producto.stock }} unidades
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-producto-acciones">
+
+                    <a
+                        href="{{ url_for('admin_editar_producto', id=producto.id) }}"
+                        class="boton-editar-producto"
+                    >
+                        ✏️ Editar información
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <section class="admin-seccion">
+
+        <div class="admin-vacio">
+
+            <div class="admin-vacio-icono">
+                📦
+            </div>
+
+            <h3>
+                No hay productos
+            </h3>
+
+            <p>
+                Todavía no existen productos registrados
+                en el catálogo.
+            </p>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Panel privado de administración.
+    </p>
+
+</footer>
+
+
+</body>
+</html>

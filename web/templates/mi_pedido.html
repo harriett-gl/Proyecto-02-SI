@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pedido #{{ pedido.id }} | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='pedidos.css') }}"
+    >
+</head>
+
+<body>
+
+<header>
+
+    <a href="/" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/">
+            Inicio
+        </a>
+
+        <a href="/productos">
+            Productos
+        </a>
+
+        <a href="/mis-pedidos" class="nav-activo">
+            🛍 Mis pedidos
+        </a>
+
+        <a href="/carrito">
+            🛒 Carrito
+        </a>
+
+        <a href="/mi-cuenta">
+            👤 Mi cuenta
+        </a>
+
+        <a href="/logout">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="pedidos-container">
+
+    <a
+        href="/mis-pedidos"
+        class="volver-pedidos"
+    >
+        ← Volver a mis pedidos
+    </a>
+
+
+    <section class="pedido-detalle-card">
+
+        <div class="pedido-detalle-top">
+
+            <div>
+
+                <p class="pedido-etiqueta">
+                    SEGUIMIENTO
+                </p>
+
+                <h1>
+                    Pedido #{{ pedido.id }}
+                </h1>
+
+                <p class="pedido-subtitulo">
+                    Consulta el estado y los productos
+                    incluidos en tu compra.
+                </p>
+
+            </div>
+
+
+            <span
+                class="estado-badge estado-{{ pedido.estado|lower }}"
+            >
+                {{ pedido.estado|capitalize }}
+            </span>
+
+        </div>
+
+
+        <div class="seguimiento-pedido">
+
+            <div class="
+                seguimiento-paso
+                {% if pedido.estado in ['pendiente', 'procesando', 'completado'] %}
+                    activo
+                {% endif %}
+            ">
+                <span>1</span>
+                <strong>Pedido recibido</strong>
+            </div>
+
+            <div class="
+                seguimiento-linea
+                {% if pedido.estado in ['procesando', 'completado'] %}
+                    activa
+                {% endif %}
+            "></div>
+
+            <div class="
+                seguimiento-paso
+                {% if pedido.estado in ['procesando', 'completado'] %}
+                    activo
+                {% endif %}
+            ">
+                <span>2</span>
+                <strong>Procesando</strong>
+            </div>
+
+            <div class="
+                seguimiento-linea
+                {% if pedido.estado == 'completado' %}
+                    activa
+                {% endif %}
+            "></div>
+
+            <div class="
+                seguimiento-paso
+                {% if pedido.estado == 'completado' %}
+                    activo
+                {% endif %}
+            ">
+                <span>3</span>
+                <strong>Completado</strong>
+            </div>
+
+        </div>
+
+
+        {% if pedido.estado == 'cancelado' %}
+
+            <div class="pedido-cancelado-aviso">
+
+                <strong>
+                    Pedido cancelado
+                </strong>
+
+                <p>
+                    Este pedido fue cancelado y ya no
+                    continuará con el proceso de compra.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="pedido-cliente-info">
+
+            <div>
+
+                <span>
+                    Cliente
+                </span>
+
+                <strong>
+                    {{ pedido.cliente_nombre }}
+                </strong>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Correo
+                </span>
+
+                <strong>
+                    {{ pedido.cliente_correo }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="pedido-productos-detalle">
+
+            <h2>
+                Productos
+            </h2>
+
+            {% for producto in pedido.productos %}
+
+                <div class="pedido-producto-fila">
+
+                    <div>
+
+                        <strong>
+                            {{ producto.producto_nombre }}
+                        </strong>
+
+                        <span>
+                            Cantidad:
+                            {{ producto.cantidad }}
+                        </span>
+
+                    </div>
+
+                    <div class="producto-precios">
+
+                        <span>
+                            Q{{ "%.2f"|format(producto.precio_unitario|float) }}
+                            c/u
+                        </span>
+
+                        <strong>
+                            Q{{ "%.2f"|format(producto.subtotal|float) }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <div class="pedido-total-final">
+
+            <span>
+                Total del pedido
+            </span>
+
+            <strong>
+                Q{{ "%.2f"|format(pedido.total|float) }}
+            </strong>
+
+        </div>
+
+
+        {% if pedido.estado == 'pendiente' %}
+
+            <div class="zona-cancelar-pedido">
+
+                <div>
+
+                    <strong>
+                        ¿Necesitas cancelar?
+                    </strong>
+
+                    <p>
+                        Puedes cancelar mientras el pedido
+                        todavía se encuentre pendiente.
+                    </p>
+
+                </div>
+
+                <form
+                    action="{{ url_for('cancelar_mi_pedido', id=pedido.id) }}"
+                    method="POST"
+                    onsubmit="return confirm('¿Seguro que deseas cancelar este pedido?');"
+                >
+
+                    <button
+                        type="submit"
+                        class="boton-cancelar-pedido"
+                    >
+                        Cancelar pedido
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Tecnología para ti.
+    </p>
+
+</footer>
+
+</body>
+</html>

@@ -5,35 +5,104 @@ CREATE TABLE IF NOT EXISTS productos (
     nombre VARCHAR(100) NOT NULL,
     descripcion VARCHAR(255),
     precio DECIMAL(10,2) NOT NULL,
-    stock INT NOT NULL DEFAULT 0
+    stock INT NOT NULL DEFAULT 0,
+
+    detalle_1 VARCHAR(255)
+        DEFAULT 'Producto tecnológico seleccionado por TechMarket.',
+
+    detalle_2 VARCHAR(255)
+        DEFAULT 'Producto nuevo.',
+
+    detalle_3 VARCHAR(255)
+        DEFAULT 'Disponibilidad actualizada desde nuestro inventario.',
+
+    detalle_4 VARCHAR(255)
+        DEFAULT 'Gestión mediante nuestra plataforma TechMarket.',
+
+    compra_segura_texto VARCHAR(255)
+        DEFAULT 'Plataforma protegida',
+
+    disponibilidad_texto VARCHAR(255)
+        DEFAULT 'Inventario actualizado',
+
+    techmarket_texto VARCHAR(255)
+        DEFAULT 'Tecnología para todos'
 );
 
-INSERT INTO productos (nombre, descripcion, precio, stock)
-SELECT 'Monitor Gamer', 'Monitor 24 pulgadas 144Hz', 1850.00, 10
+
+INSERT INTO productos (
+    nombre,
+    descripcion,
+    precio,
+    stock
+)
+SELECT
+    'Monitor Gamer',
+    'Monitor 24 pulgadas 144Hz',
+    1850.00,
+    10
 WHERE NOT EXISTS (
-    SELECT 1 FROM productos WHERE nombre = 'Monitor Gamer'
+    SELECT 1
+    FROM productos
+    WHERE nombre = 'Monitor Gamer'
 );
 
-INSERT INTO productos (nombre, descripcion, precio, stock)
-SELECT 'Teclado Mecanico', 'Teclado RGB con switches red', 650.00, 15
+
+INSERT INTO productos (
+    nombre,
+    descripcion,
+    precio,
+    stock
+)
+SELECT
+    'Teclado Mecanico',
+    'Teclado RGB con switches red',
+    650.00,
+    15
 WHERE NOT EXISTS (
-    SELECT 1 FROM productos WHERE nombre = 'Teclado Mecanico'
+    SELECT 1
+    FROM productos
+    WHERE nombre = 'Teclado Mecanico'
 );
 
-INSERT INTO productos (nombre, descripcion, precio, stock)
-SELECT 'Audifonos Gamer', 'Audifonos con microfono', 475.00, 20
+
+INSERT INTO productos (
+    nombre,
+    descripcion,
+    precio,
+    stock
+)
+SELECT
+    'Audifonos Gamer',
+    'Audifonos con microfono',
+    475.00,
+    20
 WHERE NOT EXISTS (
-    SELECT 1 FROM productos WHERE nombre = 'Audifonos Gamer'
+    SELECT 1
+    FROM productos
+    WHERE nombre = 'Audifonos Gamer'
 );
 
-INSERT INTO productos (nombre, descripcion, precio, stock)
-SELECT 'Fuente 750W', 'Fuente certificada 80 Plus Gold', 950.00, 8
+
+INSERT INTO productos (
+    nombre,
+    descripcion,
+    precio,
+    stock
+)
+SELECT
+    'Fuente 750W',
+    'Fuente certificada 80 Plus Gold',
+    950.00,
+    8
 WHERE NOT EXISTS (
-    SELECT 1 FROM productos WHERE nombre = 'Fuente 750W'
+    SELECT 1
+    FROM productos
+    WHERE nombre = 'Fuente 750W'
 );
 
-# TABLA DE USUARIOS
 
+-- USUARIOS
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -43,10 +112,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-/* =========================================================
-   TABLA DE PEDIDOS
-   ========================================================= */
-
+-- PEDIDOS
 CREATE TABLE IF NOT EXISTS pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -59,10 +125,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
 );
 
 
-/* =========================================================
-   DETALLE DE CADA PEDIDO
-   ========================================================= */
-
+-- DETALLE DE PEDIDOS
 CREATE TABLE IF NOT EXISTS detalle_pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pedido_id INT NOT NULL,
@@ -78,7 +141,25 @@ CREATE TABLE IF NOT EXISTS detalle_pedido (
         REFERENCES productos(id)
 );
 
+
 SHOW TABLES;
 
+DESCRIBE productos;
 DESCRIBE pedidos;
 DESCRIBE detalle_pedido;
+
+CREATE TABLE IF NOT EXISTS productos (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    nombre VARCHAR(100) NOT NULL,
+
+    descripcion VARCHAR(255),
+
+    precio DECIMAL(10,2) NOT NULL,
+
+    stock INT NOT NULL DEFAULT 0,
+
+    detalle_producto TEXT
+
+);

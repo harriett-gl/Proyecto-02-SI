@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Clientes | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin_ventas.css') }}"
+    >
+</head>
+
+<body>
+
+<header>
+
+    <a href="/admin" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/admin">
+            Administración
+        </a>
+
+        <a href="/admin/productos">
+            Productos
+        </a>
+
+        <a href="/admin/clientes" class="nav-activo">
+            Clientes
+        </a>
+
+        <a href="/admin/pedidos">
+            Pedidos
+        </a>
+
+        <a href="/" target="_blank">
+            Ver tienda
+        </a>
+
+        <a href="/logout" class="cerrar-sesion">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="admin-container">
+
+    <a
+        href="/admin"
+        class="volver-admin"
+    >
+        ← Volver al panel
+    </a>
+
+
+    <div class="admin-titulo">
+
+        <p class="admin-etiqueta">
+            CLIENTES
+        </p>
+
+        <h1>
+            Clientes registrados
+        </h1>
+
+        <p>
+            Consulta las cuentas de clientes y su actividad
+            de compra dentro de TechMarket.
+        </p>
+
+    </div>
+
+
+    {% if error %}
+
+        <div class="mensaje-admin-error">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+
+    {% if clientes %}
+
+        <section class="clientes-grid">
+
+            {% for cliente in clientes %}
+
+                <article class="cliente-card">
+
+                    <div class="cliente-card-superior">
+
+                        <div class="cliente-avatar">
+                            {{ cliente.nombre[0]|upper }}
+                        </div>
+
+                        <div class="cliente-identidad">
+
+                            <span class="cliente-id">
+                                CLIENTE #{{ cliente.id }}
+                            </span>
+
+                            <h2>
+                                {{ cliente.nombre }}
+                            </h2>
+
+                            <p>
+                                {{ cliente.correo }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cliente-estadisticas">
+
+                        <div class="cliente-estadistica">
+
+                            <span>
+                                Pedidos
+                            </span>
+
+                            <strong>
+                                {{ cliente.total_pedidos }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="cliente-estadistica">
+
+                            <span>
+                                Productos
+                            </span>
+
+                            <strong>
+                                {{ cliente.total_productos }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="cliente-estadistica">
+
+                            <span>
+                                Total comprado
+                            </span>
+
+                            <strong>
+                                Q{{ "%.2f"|format(cliente.total_gastado|float) }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for('admin_cliente', id=cliente.id) }}"
+                        class="boton-ver-cliente"
+                    >
+                        Ver historial
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+            {% endfor %}
+
+        </section>
+
+
+    {% else %}
+
+        <section class="admin-vacio-ventas">
+
+            <div class="admin-vacio-icono">
+                👥
+            </div>
+
+            <h2>
+                Todavía no hay clientes
+            </h2>
+
+            <p>
+                Cuando una persona cree una cuenta como cliente,
+                aparecerá automáticamente en esta sección.
+            </p>
+
+            <a
+                href="/admin"
+                class="boton-secundario-admin"
+            >
+                Volver al panel
+            </a>
+
+        </section>
+
+    {% endif %}
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Panel privado de administración.
+    </p>
+
+</footer>
+
+</body>
+</html>

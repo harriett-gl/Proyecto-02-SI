@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Editar cuenta | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='cuenta.css') }}"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <a href="/" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/">
+            Inicio
+        </a>
+
+        <a href="/productos">
+            Productos
+        </a>
+
+        <a href="/mis-pedidos">
+            🛍 Mis pedidos
+        </a>
+
+        <a href="/carrito">
+            🛒 Carrito
+        </a>
+
+        <a
+            href="/mi-cuenta"
+            class="nav-activo"
+        >
+            👤 Mi cuenta
+        </a>
+
+        <a href="/logout">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="cuenta-container cuenta-editar-container">
+
+    <a
+        href="/mi-cuenta"
+        class="volver-cuenta"
+    >
+        ← Volver a mi cuenta
+    </a>
+
+
+    <div class="cuenta-titulo">
+
+        <p class="cuenta-etiqueta">
+            CONFIGURACIÓN
+        </p>
+
+        <h1>
+            Editar mis datos
+        </h1>
+
+        <p>
+            Actualiza la información asociada
+            a tu cuenta de TechMarket.
+        </p>
+
+    </div>
+
+
+    <section class="editar-cuenta-card">
+
+        <div class="editar-cuenta-header">
+
+            <div class="perfil-avatar">
+                {{ cliente.nombre[0]|upper }}
+            </div>
+
+            <div>
+
+                <span class="cuenta-etiqueta">
+                    INFORMACIÓN PERSONAL
+                </span>
+
+                <h2>
+                    Datos de tu cuenta
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        {% if error %}
+
+            <div class="cuenta-alerta-error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form
+            action="/mi-cuenta/editar"
+            method="POST"
+            class="form-cuenta"
+        >
+
+            <div class="campo-cuenta">
+
+                <label for="nombre">
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    value="{{ cliente.nombre }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="campo-cuenta">
+
+                <label for="correo">
+                    Correo electrónico
+                </label>
+
+                <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    value="{{ cliente.correo }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="acciones-form-cuenta">
+
+                <button
+                    type="submit"
+                    class="boton-guardar-cuenta"
+                >
+                    ✓ Guardar cambios
+                </button>
+
+                <a
+                    href="/mi-cuenta"
+                    class="boton-cancelar-edicion"
+                >
+                    Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Productos tecnológicos y soluciones para ti.
+    </p>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ cliente.nombre }} | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin_ventas.css') }}"
+    >
+</head>
+
+<body>
+
+<header>
+
+    <a href="/admin" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/admin">
+            Administración
+        </a>
+
+        <a href="/admin/productos">
+            Productos
+        </a>
+
+        <a href="/admin/clientes" class="nav-activo">
+            Clientes
+        </a>
+
+        <a href="/admin/pedidos">
+            Pedidos
+        </a>
+
+        <a href="/" target="_blank">
+            Ver tienda
+        </a>
+
+        <a href="/logout" class="cerrar-sesion">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="admin-container">
+
+    <a
+        href="/admin/clientes"
+        class="volver-admin"
+    >
+        ← Volver a clientes
+    </a>
+
+
+    <div class="admin-titulo">
+
+        <p class="admin-etiqueta">
+            PERFIL DEL CLIENTE
+        </p>
+
+        <h1>
+            {{ cliente.nombre }}
+        </h1>
+
+        <p>
+            Información general e historial de compras
+            realizadas en TechMarket.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         INFORMACIÓN DEL CLIENTE
+         ===================================================== -->
+
+    <section class="perfil-cliente">
+
+        <div class="perfil-cliente-principal">
+
+            <div class="perfil-avatar">
+                {{ cliente.nombre[0]|upper }}
+            </div>
+
+            <div>
+
+                <span class="cliente-id">
+                    CLIENTE #{{ cliente.id }}
+                </span>
+
+                <h2>
+                    {{ cliente.nombre }}
+                </h2>
+
+                <p>
+                    {{ cliente.correo }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ESTADÍSTICAS -->
+
+        <div class="perfil-estadisticas">
+
+            <div class="perfil-estadistica">
+
+                <div class="estadistica-icono">
+                    🛍️
+                </div>
+
+                <div>
+
+                    <span>
+                        Pedidos realizados
+                    </span>
+
+                    <strong>
+                        {{ cliente.total_pedidos }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="perfil-estadistica">
+
+                <div class="estadistica-icono">
+                    📦
+                </div>
+
+                <div>
+
+                    <span>
+                        Productos comprados
+                    </span>
+
+                    <strong>
+                        {{ cliente.total_productos }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="perfil-estadistica">
+
+                <div class="estadistica-icono">
+                    ✦
+                </div>
+
+                <div>
+
+                    <span>
+                        Total comprado
+                    </span>
+
+                    <strong>
+                        Q{{ "%.2f"|format(cliente.total_gastado|float) }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         HISTORIAL DE PEDIDOS
+         ===================================================== -->
+
+    <section class="historial-seccion">
+
+        <div class="historial-encabezado">
+
+            <div>
+
+                <p class="admin-etiqueta">
+                    ACTIVIDAD
+                </p>
+
+                <h2>
+                    Historial de pedidos
+                </h2>
+
+            </div>
+
+
+            <!-- IMPORTANTE:
+                 Aquí mostramos el total real de pedidos,
+                 no solamente los de la página actual. -->
+
+            <span class="contador-pedidos">
+
+                {{ total_pedidos }}
+
+                {% if total_pedidos == 1 %}
+                    pedido
+                {% else %}
+                    pedidos
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        {% if pedidos %}
+
+            <div class="pedidos-lista">
+
+                {% for pedido in pedidos %}
+
+                    <article class="pedido-fila">
+
+                        <div class="pedido-icono">
+                            🛍️
+                        </div>
+
+
+                        <div class="pedido-fila-info">
+
+                            <span class="pedido-numero">
+                                PEDIDO #{{ pedido.id }}
+                            </span>
+
+                            <h3>
+                                Compra registrada
+                            </h3>
+
+                            <p>
+
+                                {{ pedido.unidades }}
+
+                                {% if pedido.unidades == 1 %}
+                                    producto
+                                {% else %}
+                                    productos
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- ESTADO DEL PEDIDO -->
+
+                        <div class="pedido-estado">
+
+                            <span
+                                class="estado-badge estado-{{ pedido.estado|lower }}"
+                            >
+                                {{ pedido.estado|capitalize }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- TOTAL -->
+
+                        <div class="pedido-total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong>
+                                Q{{ "%.2f"|format(pedido.total|float) }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- VER PEDIDO -->
+
+                        <a
+                            href="{{ url_for('admin_pedido', id=pedido.id) }}"
+                            class="boton-ver-pedido"
+                        >
+                            Ver pedido →
+                        </a>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- =================================================
+                 PAGINACIÓN
+                 ================================================= -->
+
+            {% if total_paginas > 1 %}
+
+                <div class="paginacion-pedidos">
+
+
+                    <!-- ANTERIOR -->
+
+                    {% if pagina > 1 %}
+
+                        <a
+                            href="{{ url_for(
+                                'admin_cliente',
+                                id=cliente.id,
+                                pagina=pagina-1
+                            ) }}"
+                            class="paginacion-flecha"
+                        >
+                            ← Anterior
+                        </a>
+
+                    {% endif %}
+
+
+                    <!-- NÚMEROS DE PÁGINA -->
+
+                    <div class="paginacion-numeros">
+
+                        {% for numero in range(1, total_paginas + 1) %}
+
+                            {% if numero == pagina %}
+
+                                <span class="pagina-activa">
+                                    {{ numero }}
+                                </span>
+
+                            {% else %}
+
+                                <a
+                                    href="{{ url_for(
+                                        'admin_cliente',
+                                        id=cliente.id,
+                                        pagina=numero
+                                    ) }}"
+                                    class="pagina-numero"
+                                >
+                                    {{ numero }}
+                                </a>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- SIGUIENTE -->
+
+                    {% if pagina < total_paginas %}
+
+                        <a
+                            href="{{ url_for(
+                                'admin_cliente',
+                                id=cliente.id,
+                                pagina=pagina+1
+                            ) }}"
+                            class="paginacion-flecha"
+                        >
+                            Siguiente →
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+
+        {% else %}
+
+            <div class="historial-vacio">
+
+                <div>
+                    🛒
+                </div>
+
+                <h3>
+                    Sin compras todavía
+                </h3>
+
+                <p>
+                    Este cliente aún no ha realizado ningún pedido.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Panel privado de administración.
+    </p>
+
+</footer>
+
+</body>
+</html>

@@ -13,24 +13,40 @@
 
     <link
         rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='auth.css') }}"
     >
 </head>
+
 
 <body>
 
 <header>
+
     <a href="/" class="logo">
         Tech<span>Market</span>
     </a>
 
     <nav>
-        <a href="/">Inicio</a>
+
+        <a href="/">
+            Inicio
+        </a>
+
+        <a href="/#productos">
+            Productos
+        </a>
 
         <a href="/registro">
             Crear cuenta
         </a>
+
     </nav>
+
 </header>
 
 
@@ -38,63 +54,89 @@
 
     <section class="auth-card">
 
-        <p class="admin-etiqueta">
-            TECHMARKET
+        <div class="auth-icono">
+            👤
+        </div>
+
+
+        <p class="auth-etiqueta">
+            BIENVENIDO A TECHMARKET
         </p>
+
 
         <h1>
             Iniciar sesión
         </h1>
 
-        <p>
-            Accede a tu cuenta para continuar.
+
+        <p class="auth-descripcion">
+            Accede a tu cuenta para continuar con tus compras.
         </p>
+
 
         {% if registrado %}
 
-            <div class="mensaje-exito">
+            <div class="auth-exito">
                 ✓ Cuenta creada correctamente.
                 Ya puedes iniciar sesión.
             </div>
 
         {% endif %}
 
+
         {% if error %}
 
-            <div class="mensaje-error">
+            <div class="auth-error">
                 {{ error }}
             </div>
 
         {% endif %}
 
 
-        <form method="POST">
+        <form
+            method="POST"
+            class="auth-form"
+        >
 
-            <div>
-                <label>Correo electrónico</label>
+            <div class="auth-campo">
+
+                <label for="correo">
+                    Correo electrónico
+                </label>
 
                 <input
                     type="email"
+                    id="correo"
                     name="correo"
                     placeholder="correo@ejemplo.com"
+                    autocomplete="email"
                     required
                 >
+
             </div>
 
-            <div>
-                <label>Contraseña</label>
+
+            <div class="auth-campo">
+
+                <label for="password">
+                    Contraseña
+                </label>
 
                 <input
                     type="password"
+                    id="password"
                     name="password"
-                    placeholder="Tu contraseña"
+                    placeholder="Ingresa tu contraseña"
+                    autocomplete="current-password"
                     required
                 >
+
             </div>
+
 
             <button
                 type="submit"
-                class="boton-admin"
+                class="auth-boton"
             >
                 Iniciar sesión
             </button>
@@ -102,9 +144,14 @@
         </form>
 
 
-        <p class="auth-enlace">
+        <div class="auth-separador">
+            <span>o</span>
+        </div>
 
-            ¿No tienes cuenta?
+
+        <p class="auth-cuenta">
+
+            ¿Todavía no tienes una cuenta?
 
             <a href="/registro">
                 Crear cuenta
@@ -118,12 +165,17 @@
 
 
 <footer>
-    <strong>TechMarket</strong>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
 
     <p>
         Tecnología para todos.
     </p>
+
 </footer>
 
 </body>
+
 </html>

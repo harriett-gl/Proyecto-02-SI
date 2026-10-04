@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pedido #{{ pedido.id }} | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin_ventas.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='pedidos.css') }}"
+    >
+</head>
+
+<body>
+
+<header>
+
+    <a href="/admin" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/admin">
+            Administración
+        </a>
+
+        <a href="/admin/productos">
+            Productos
+        </a>
+
+        <a href="/admin/clientes">
+            Clientes
+        </a>
+
+        <a
+            href="/admin/pedidos"
+            class="nav-activo"
+        >
+            Pedidos
+        </a>
+
+        <a
+            href="/"
+            target="_blank"
+        >
+            Ver tienda
+        </a>
+
+        <a
+            href="/logout"
+            class="cerrar-sesion"
+        >
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="admin-container">
+
+    <a
+        href="/admin/pedidos"
+        class="volver-admin"
+    >
+        ← Volver a pedidos
+    </a>
+
+
+    <div class="admin-titulo">
+
+        <p class="admin-etiqueta">
+            DETALLE DE VENTA
+        </p>
+
+        <h1>
+            Pedido #{{ pedido.id }}
+        </h1>
+
+        <p>
+            Información completa de la compra registrada.
+        </p>
+
+    </div>
+
+
+    <!-- ============================================= -->
+    <!-- CLIENTE + RESUMEN -->
+    <!-- ============================================= -->
+
+    <section class="pedido-detalle-superior">
+
+        <div class="pedido-cliente-card">
+
+            <div class="pedido-cliente-icono">
+                {{ pedido.cliente_nombre[0]|upper }}
+            </div>
+
+            <div>
+
+                <span class="cliente-id">
+                    CLIENTE
+                </span>
+
+                <h2>
+                    {{ pedido.cliente_nombre }}
+                </h2>
+
+                <p>
+                    {{ pedido.cliente_correo }}
+                </p>
+
+                <a
+                    href="{{ url_for('admin_cliente', id=pedido.usuario_id) }}"
+                    class="ver-perfil-cliente"
+                >
+                    Ver perfil del cliente →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="pedido-resumen-card">
+
+            <span>
+                Estado del pedido
+            </span>
+
+            <div
+                class="estado-badge estado-grande estado-{{ pedido.estado|lower }}"
+            >
+                {{ pedido.estado|capitalize }}
+            </div>
+
+
+            <div class="pedido-resumen-total">
+
+                <span>
+                    Total de la compra
+                </span>
+
+                <strong>
+                    Q{{ "%.2f"|format(pedido.total|float) }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================================= -->
+    <!-- PRODUCTOS -->
+    <!-- ============================================= -->
+
+    <section class="detalle-productos-panel">
+
+        <div class="detalle-productos-header">
+
+            <div>
+
+                <p class="admin-etiqueta">
+                    PRODUCTOS
+                </p>
+
+                <h2>
+                    Productos comprados
+                </h2>
+
+            </div>
+
+
+            <span class="contador-pedidos">
+
+                {{ pedido.productos|length }}
+
+                {% if pedido.productos|length == 1 %}
+                    producto
+                {% else %}
+                    productos
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <div class="detalle-tabla-contenedor">
+
+            <table class="detalle-tabla">
+
+                <thead>
+
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio unitario</th>
+                        <th>Subtotal</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for producto in pedido.productos %}
+
+                        <tr>
+
+                            <td>
+
+                                <div class="detalle-producto-nombre">
+
+                                    <div class="detalle-producto-icono">
+                                        📦
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            {{ producto.producto_nombre }}
+                                        </strong>
+
+                                        <span>
+                                            Producto #{{ producto.producto_id }}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="cantidad-badge">
+                                    {{ producto.cantidad }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                Q{{ "%.2f"|format(producto.precio_unitario|float) }}
+                            </td>
+
+
+                            <td class="subtotal-destacado">
+                                Q{{ "%.2f"|format(producto.subtotal|float) }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="detalle-total-final">
+
+            <span>
+                Total del pedido
+            </span>
+
+            <strong>
+                Q{{ "%.2f"|format(pedido.total|float) }}
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================================= -->
+    <!-- GESTIÓN DEL ESTADO -->
+    <!-- ============================================= -->
+
+    {% if pedido.estado|lower == "cancelado" %}
+
+        <section class="gestion-estado-panel pedido-cancelado-panel">
+
+            <div class="gestion-estado-info">
+
+                <p class="admin-etiqueta pedido-cancelado-etiqueta">
+                    PEDIDO CANCELADO
+                </p>
+
+                <h2>
+                    Este pedido fue cancelado
+                </h2>
+
+                <p>
+                    El pedido se encuentra cancelado y su estado
+                    ya no puede modificarse.
+                </p>
+
+            </div>
+
+            <div class="pedido-cancelado-aviso">
+
+                <div class="pedido-cancelado-icono">
+                    ✕
+                </div>
+
+                <div>
+                    <strong>Estado final</strong>
+                    <span>Cancelado</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+    {% elif pedido.estado|lower == "completado" %}
+
+        <section class="gestion-estado-panel pedido-completado-panel">
+
+            <div class="gestion-estado-info">
+
+                <p class="admin-etiqueta pedido-completado-etiqueta">
+                    PEDIDO COMPLETADO
+                </p>
+
+                <h2>
+                    Este pedido fue completado
+                </h2>
+
+                <p>
+                    La compra fue completada correctamente.
+                    El estado del pedido ya no puede modificarse.
+                </p>
+
+            </div>
+
+            <div class="pedido-completado-aviso">
+
+                <div class="pedido-completado-icono">
+                    ✓
+                </div>
+
+                <div>
+                    <strong>Estado final</strong>
+                    <span>Completado</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+    {% else %}
+
+        <section class="gestion-estado-panel">
+
+            <div class="gestion-estado-info">
+
+                <p class="admin-etiqueta">
+                    GESTIÓN DEL PEDIDO
+                </p>
+
+                <h2>
+                    Actualizar estado
+                </h2>
+
+                <p>
+                    Cambia el estado según el avance del pedido.
+                    El cliente podrá consultar el estado actualizado.
+                </p>
+
+            </div>
+
+            <form
+                action="{{ url_for('admin_actualizar_estado_pedido', id=pedido.id) }}"
+                method="POST"
+                class="form-estado-pedido"
+            >
+
+                <div class="campo-estado">
+
+                    <label for="estado">
+                        Nuevo estado
+                    </label>
+
+                    <select
+                        id="estado"
+                        name="estado"
+                        required
+                    >
+
+                        <option
+                            value="pendiente"
+                            {% if pedido.estado|lower == "pendiente" %}
+                                selected
+                            {% endif %}
+                        >
+                            Pendiente
+                        </option>
+
+                        <option
+                            value="procesando"
+                            {% if pedido.estado|lower == "procesando" %}
+                                selected
+                            {% endif %}
+                        >
+                            Procesando
+                        </option>
+
+                        <option value="completado">
+                            Completado
+                        </option>
+
+                        <option value="cancelado">
+                            Cancelado
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="boton-actualizar-estado"
+                >
+                    ✓ Actualizar estado
+                </button>
+
+            </form>
+
+        </section>
+
+    {% endif %}
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Panel privado de administración.
+    </p>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,411 @@
+/* =========================================================
+   TECHMARKET - DETALLE DEL PRODUCTO
+========================================================= */
+
+.detalle-container {
+    width: min(1000px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 35px 0 70px;
+}
+
+
+/* =========================================================
+   BOTÓN VOLVER
+========================================================= */
+
+.volver {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    width: fit-content;
+
+    margin-bottom: 22px;
+    padding: 9px 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #e3dfff;
+    border-radius: 10px;
+
+    color: var(--morado);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    box-shadow:
+        0 5px 15px rgba(30, 35, 75, 0.04);
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.volver:hover {
+    transform: translateX(-3px);
+
+    background: var(--morado-claro);
+
+    box-shadow:
+        0 8px 20px rgba(104, 83, 232, 0.10);
+}
+
+
+/* =========================================================
+   PRODUCTO
+========================================================= */
+
+.detalle-producto {
+    padding: 36px;
+
+    display: grid;
+
+    grid-template-columns:
+        0.9fr
+        1.1fr;
+
+    gap: 48px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--borde);
+    border-radius: 22px;
+
+    box-shadow: var(--sombra);
+}
+
+
+/* =========================================================
+   IMAGEN
+========================================================= */
+
+.detalle-producto-imagen {
+    min-height: 480px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f8f7ff,
+            #eeebff
+        );
+}
+
+
+.imagen-grande {
+    font-size: 85px;
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+========================================================= */
+
+.detalle-producto-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.producto-categoria {
+    margin-bottom: 10px;
+
+    color: var(--morado);
+
+    font-size: 12px;
+    font-weight: 850;
+
+    letter-spacing: 1.5px;
+}
+
+
+.detalle-producto-info h1 {
+    font-size: 36px;
+    line-height: 1.05;
+
+    letter-spacing: -1.5px;
+}
+
+
+.detalle-descripcion {
+    margin-top: 12px;
+
+    color: var(--gris);
+
+    font-size: 14px;
+}
+
+
+.detalle-precio {
+    margin-top: 22px;
+
+    color: var(--morado);
+
+    font-size: 30px;
+    font-weight: 850;
+}
+
+
+/* =========================================================
+   STOCK
+========================================================= */
+
+.detalle-stock {
+    width: fit-content;
+
+    margin-top: 15px;
+    padding: 9px 14px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.detalle-stock.disponible {
+    background: var(--verde-bg);
+
+    color: var(--verde);
+}
+
+
+.detalle-stock.agotado {
+    background: #fff0f0;
+
+    color: #c64c4c;
+}
+
+
+/* =========================================================
+   ACERCA DEL PRODUCTO
+========================================================= */
+
+.acerca-producto {
+    margin-top: 25px;
+    padding: 20px;
+
+    background: #faf9ff;
+
+    border: 1px solid #ebe8ff;
+    border-radius: 14px;
+}
+
+
+.acerca-producto h2 {
+    margin-bottom: 9px;
+
+    font-size: 17px;
+}
+
+
+.acerca-producto p,
+.detalle-producto-texto {
+    color: #555d72;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CARRITO
+========================================================= */
+
+.form-agregar-carrito {
+    display: grid;
+
+    grid-template-columns:
+        100px
+        1fr;
+
+    align-items: end;
+
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
+
+.form-agregar-carrito label,
+.campo-cantidad label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 12px;
+    font-weight: 750;
+}
+
+
+.form-agregar-carrito input,
+.campo-cantidad input {
+    width: 100%;
+    height: 43px;
+
+    padding: 0 10px;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe2ec;
+    border-radius: 9px;
+
+    outline: none;
+}
+
+
+.form-agregar-carrito input:focus,
+.campo-cantidad input:focus {
+    border-color: var(--morado);
+
+    box-shadow:
+        0 0 0 3px rgba(104, 83, 232, 0.08);
+}
+
+
+.boton-comprar {
+    height: 43px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--morado),
+            var(--morado-2)
+        );
+
+    color: #ffffff;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 8px 20px rgba(104, 83, 232, 0.20);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.boton-comprar:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 11px 25px rgba(104, 83, 232, 0.25);
+}
+
+
+.boton-comprar:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   BENEFICIOS
+========================================================= */
+
+.beneficios-producto {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+    margin-top: 25px;
+    padding-top: 20px;
+
+    border-top: 1px solid var(--borde);
+}
+
+
+.beneficio-item {
+    display: flex;
+
+    gap: 8px;
+
+    align-items: flex-start;
+}
+
+
+.beneficio-icono {
+    font-size: 17px;
+}
+
+
+.beneficio-item strong {
+    font-size: 11px;
+}
+
+
+.beneficio-item p {
+    margin-top: 2px;
+
+    color: var(--gris);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .detalle-producto {
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+    }
+
+
+    .detalle-producto-imagen {
+        min-height: 280px;
+    }
+
+
+    .beneficios-producto {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .detalle-container {
+        width: calc(100% - 28px);
+    }
+
+
+    .detalle-producto {
+        padding: 22px;
+    }
+
+
+    .detalle-producto-info h1 {
+        font-size: 30px;
+    }
+
+
+    .form-agregar-carrito {
+        grid-template-columns: 1fr;
+    }
+
+}

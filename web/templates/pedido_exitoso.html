@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pedido realizado | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='pedidos.css') }}"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <a href="/" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/">
+            Inicio
+        </a>
+
+        <a href="/carrito">
+            Carrito
+        </a>
+
+        <a href="/mis-pedidos">
+            Mis pedidos
+        </a>
+
+        <span class="usuario-nav">
+            Hola, {{ usuario.nombre }}
+        </span>
+
+        <a href="/logout" class="cerrar-sesion">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="confirmacion-container">
+
+    <section class="confirmacion-card">
+
+        <div class="confirmacion-check">
+            ✓
+        </div>
+
+        <p class="pedidos-etiqueta">
+            PEDIDO REGISTRADO
+        </p>
+
+        <h1>
+            ¡Tu pedido fue realizado!
+        </h1>
+
+        <p class="confirmacion-descripcion">
+            Tu compra fue registrada correctamente.
+            Puedes consultar su progreso desde Mis pedidos.
+        </p>
+
+
+        <div class="confirmacion-datos">
+
+            <div>
+
+                <span>
+                    Número de pedido
+                </span>
+
+                <strong>
+                    #{{ pedido.id }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Estado
+                </span>
+
+                <strong class="estado-cliente estado-{{ pedido.estado }}">
+                    {{ pedido.estado|capitalize }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Total
+                </span>
+
+                <strong class="total-morado">
+                    Q{{ "%.2f"|format(pedido.total|float) }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="confirmacion-acciones">
+
+            <a
+                href="{{ url_for('mi_pedido', id=pedido.id) }}"
+                class="boton-confirmacion-principal"
+            >
+                Ver detalle del pedido
+            </a>
+
+            <a
+                href="/"
+                class="boton-confirmacion-secundario"
+            >
+                Seguir comprando
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Tecnología para todos.
+    </p>
+
+</footer>
+
+</body>
+</html>

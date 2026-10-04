@@ -10,17 +10,15 @@
 
     <title>Carrito | TechMarket</title>
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='carrito.css') }}">
 </head>
 
 <body>
 
 <header>
 
-    <a href="/" class="logo">
+    <a href="{{ url_for('inicio') }}" class="logo">
         Tech<span>Market</span>
     </a>
 
@@ -34,18 +32,26 @@
             Productos
         </a>
 
-        <a
-            href="{{ url_for('carrito') }}"
-            class="carrito-nav"
-        >
-            🛒 Carrito ({{ cantidad_carrito }})
-        </a>
-
         {% if usuario %}
 
-            <span>
-                Hola, {{ usuario.nombre }}
-            </span>
+            {% if usuario.rol == 'cliente' %}
+
+                <a href="{{ url_for('mis_pedidos') }}">
+                    Mis pedidos
+                </a>
+
+                <a href="{{ url_for('mi_cuenta') }}">
+                    Mi cuenta
+                </a>
+
+            {% endif %}
+
+            <a
+                href="{{ url_for('carrito') }}"
+                class="carrito-nav"
+            >
+                🛒 Carrito ({{ cantidad_carrito }})
+            </a>
 
             <a href="{{ url_for('logout') }}">
                 Cerrar sesión
@@ -55,6 +61,13 @@
 
             <a href="{{ url_for('login') }}">
                 Iniciar sesión
+            </a>
+
+            <a
+                href="{{ url_for('carrito') }}"
+                class="carrito-nav"
+            >
+                🛒 Carrito ({{ cantidad_carrito }})
             </a>
 
         {% endif %}
@@ -110,6 +123,17 @@
                     {% if 'monitor' in nombre %}
 
                         🖥️
+
+                    {% elif 'teléfono' in nombre
+                        or 'telefono' in nombre %}
+
+                        📞
+
+                    {% elif 'celular' in nombre
+                        or 'iphone' in nombre
+                        or 'smartphone' in nombre %}
+
+                        📱
 
                     {% elif 'teclado' in nombre %}
 

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pedidos | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin_ventas.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <a href="/admin" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/admin">
+            Administración
+        </a>
+
+        <a href="/admin/productos">
+            Productos
+        </a>
+
+        <a href="/admin/clientes">
+            Clientes
+        </a>
+
+        <a href="/admin/pedidos" class="nav-activo">
+            Pedidos
+        </a>
+
+        <a href="/" target="_blank">
+            Ver tienda
+        </a>
+
+        <a href="/logout" class="cerrar-sesion">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<main class="admin-container">
+
+
+    <a
+        href="/admin"
+        class="volver-admin"
+    >
+        ← Volver al panel
+    </a>
+
+
+
+    <div class="admin-titulo">
+
+        <p class="admin-etiqueta">
+            VENTAS
+        </p>
+
+        <h1>
+            Pedidos de TechMarket
+        </h1>
+
+        <p>
+            Consulta las compras realizadas por los clientes
+            y revisa el detalle de cada pedido.
+        </p>
+
+    </div>
+
+
+
+    {% if error %}
+
+        <div class="mensaje-admin-error">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+
+
+    {% if pedidos %}
+
+
+        <section class="pedidos-panel">
+
+
+            <!-- ========================================= -->
+            <!-- ENCABEZADO -->
+            <!-- ========================================= -->
+
+            <div class="pedidos-panel-header">
+
+                <div>
+
+                    <p class="admin-etiqueta">
+                        HISTORIAL
+                    </p>
+
+                    <h2>
+                        Pedidos registrados
+                    </h2>
+
+                </div>
+
+
+                <span class="contador-pedidos">
+
+                    {{ total_pedidos }}
+
+                    {% if total_pedidos == 1 %}
+                        pedido
+                    {% else %}
+                        pedidos
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+
+            <!-- ========================================= -->
+            <!-- LISTA DE PEDIDOS -->
+            <!-- ========================================= -->
+
+            <div class="pedidos-lista">
+
+
+                {% for pedido in pedidos %}
+
+
+                    <article class="pedido-fila pedido-fila-general">
+
+
+                        <div class="pedido-icono">
+                            🛍️
+                        </div>
+
+
+
+                        <!-- CLIENTE -->
+
+                        <div class="pedido-fila-info">
+
+                            <span class="pedido-numero">
+                                PEDIDO #{{ pedido.id }}
+                            </span>
+
+                            <h3>
+                                {{ pedido.cliente_nombre }}
+                            </h3>
+
+                            <p>
+                                {{ pedido.cliente_correo }}
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- PRODUCTOS -->
+
+                        <div class="pedido-productos">
+
+                            <span>
+                                Productos
+                            </span>
+
+                            <strong>
+                                {{ pedido.unidades }}
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- ESTADO -->
+
+                        <div class="pedido-estado">
+
+                            <span
+                                class="estado-badge estado-{{ pedido.estado|lower }}"
+                            >
+                                {{ pedido.estado|capitalize }}
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- TOTAL -->
+
+                        <div class="pedido-total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong>
+                                Q{{ "%.2f"|format(pedido.total|float) }}
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- DETALLE -->
+
+                        <a
+                            href="{{ url_for(
+                                'admin_pedido',
+                                id=pedido.id
+                            ) }}"
+                            class="boton-ver-pedido"
+                        >
+                            Ver detalle →
+                        </a>
+
+
+                    </article>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+
+            <!-- ========================================= -->
+            <!-- PAGINACIÓN -->
+            <!-- ========================================= -->
+
+            {% if total_paginas > 1 %}
+
+
+                <div class="paginacion-contenedor">
+
+
+                    <nav class="paginacion-pedidos">
+
+
+                        <!-- ANTERIOR -->
+
+                        {% if pagina > 1 %}
+
+                            <a
+                                href="{{ url_for(
+                                    'admin_pedidos',
+                                    pagina=pagina-1
+                                ) }}"
+                                class="paginacion-flecha"
+                            >
+                                ← Anterior
+                            </a>
+
+                        {% else %}
+
+                            <span
+                                class="paginacion-flecha paginacion-deshabilitada"
+                            >
+                                ← Anterior
+                            </span>
+
+                        {% endif %}
+
+
+
+                        <!-- NÚMEROS DE PÁGINA -->
+
+                        <div class="paginacion-numeros">
+
+
+                            {% for numero in range(1, total_paginas + 1) %}
+
+
+                                {% if numero == pagina %}
+
+                                    <span class="pagina-activa">
+                                        {{ numero }}
+                                    </span>
+
+                                {% else %}
+
+                                    <a
+                                        href="{{ url_for(
+                                            'admin_pedidos',
+                                            pagina=numero
+                                        ) }}"
+                                        class="pagina-numero"
+                                    >
+                                        {{ numero }}
+                                    </a>
+
+                                {% endif %}
+
+
+                            {% endfor %}
+
+
+                        </div>
+
+
+
+                        <!-- SIGUIENTE -->
+
+                        {% if pagina < total_paginas %}
+
+                            <a
+                                href="{{ url_for(
+                                    'admin_pedidos',
+                                    pagina=pagina+1
+                                ) }}"
+                                class="paginacion-flecha"
+                            >
+                                Siguiente →
+                            </a>
+
+                        {% else %}
+
+                            <span
+                                class="paginacion-flecha paginacion-deshabilitada"
+                            >
+                                Siguiente →
+                            </span>
+
+                        {% endif %}
+
+
+                    </nav>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+
+    {% else %}
+
+
+        <!-- ========================================= -->
+        <!-- SIN PEDIDOS -->
+        <!-- ========================================= -->
+
+        <section class="admin-vacio-ventas">
+
+
+            <div class="admin-vacio-icono">
+                🛍️
+            </div>
+
+
+            <h2>
+                Todavía no hay pedidos
+            </h2>
+
+
+            <p>
+                Las compras realizadas por los clientes
+                aparecerán automáticamente aquí.
+            </p>
+
+
+            <a
+                href="/admin"
+                class="boton-secundario-admin"
+            >
+                Volver al panel
+            </a>
+
+
+        </section>
+
+
+    {% endif %}
+
+
+</main>
+
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Panel privado de administración.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

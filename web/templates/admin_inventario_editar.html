@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Editar inventario | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='admin.css') }}"
+    >
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='admin_inventario.css') }}"
+    >
+
+
+</head>
+
+<body>
+
+
+<header>
+
+    <a href="/admin" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/admin">
+            Administración
+        </a>
+
+        <a href="/admin/productos">
+            Productos
+        </a>
+
+        <a href="/admin/clientes">
+            Clientes
+        </a>
+
+        <a href="/admin/pedidos">
+            Pedidos
+        </a>
+
+        <a href="/" target="_blank">
+            Ver tienda
+        </a>
+
+        <a
+            href="/admin/logout"
+            class="cerrar-sesion"
+        >
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="admin-container">
+
+
+    <a
+        href="/admin"
+        class="volver-admin"
+    >
+        ← Volver al panel
+    </a>
+
+
+    <div class="admin-titulo">
+
+        <p class="admin-etiqueta">
+            GESTIÓN DE INVENTARIO
+        </p>
+
+        <h1>
+            Editar {{ producto.nombre }}
+        </h1>
+
+        <p>
+            Actualiza el precio y las unidades disponibles
+            de este producto.
+        </p>
+
+    </div>
+
+
+    <section class="inventario-editar-card">
+
+
+        <div class="inventario-producto-resumen">
+
+            <div class="inventario-producto-icono">
+                📦
+            </div>
+
+            <div>
+
+                <p class="admin-mini-etiqueta">
+                    PRODUCTO #{{ producto.id }}
+                </p>
+
+                <h2>
+                    {{ producto.nombre }}
+                </h2>
+
+                <p>
+                    {{ producto.descripcion }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            action="/admin/inventario/{{ producto.id }}/editar"
+            method="POST"
+            class="form-inventario-editar"
+        >
+
+
+            <div class="inventario-campos">
+
+
+                <div class="inventario-campo">
+
+                    <label for="precio">
+                        Precio
+                    </label>
+
+                    <div class="campo-precio">
+
+                        <span>
+                            Q
+                        </span>
+
+                        <input
+                            type="number"
+                            id="precio"
+                            name="precio"
+                            value="{{ producto.precio }}"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+                    <small>
+                        Precio que verá el cliente en la tienda.
+                    </small>
+
+                </div>
+
+
+                <div class="inventario-campo">
+
+                    <label for="stock">
+                        Stock disponible
+                    </label>
+
+                    <input
+                        type="number"
+                        id="stock"
+                        name="stock"
+                        value="{{ producto.stock }}"
+                        min="0"
+                        step="1"
+                        required
+                    >
+
+                    <small>
+                        Cantidad disponible actualmente.
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="ajuste-rapido">
+
+                <div>
+
+                    <p class="admin-mini-etiqueta">
+                        AJUSTE RÁPIDO
+                    </p>
+
+                    <h3>
+                        Modificar existencias
+                    </h3>
+
+                    <p>
+                        Utiliza los botones para ajustar rápidamente
+                        la cantidad disponible.
+                    </p>
+
+                </div>
+
+
+                <div class="ajuste-stock-botones">
+
+                    <button
+                        type="button"
+                        class="boton-ajuste-stock"
+                        onclick="ajustarStock(-1)"
+                    >
+                        −1
+                    </button>
+
+                    <button
+                        type="button"
+                        class="boton-ajuste-stock"
+                        onclick="ajustarStock(1)"
+                    >
+                        +1
+                    </button>
+
+                    <button
+                        type="button"
+                        class="boton-ajuste-stock"
+                        onclick="ajustarStock(5)"
+                    >
+                        +5
+                    </button>
+
+                    <button
+                        type="button"
+                        class="boton-ajuste-stock"
+                        onclick="ajustarStock(10)"
+                    >
+                        +10
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="inventario-estado">
+
+                <div>
+
+                    <span class="inventario-estado-label">
+                        Precio actual
+                    </span>
+
+                    <strong>
+                        Q{{ "%.2f"|format(producto.precio|float) }}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span class="inventario-estado-label">
+                        Existencias actuales
+                    </span>
+
+                    <strong>
+                        {{ producto.stock }} unidades
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="inventario-acciones">
+
+                <button
+                    type="submit"
+                    class="boton-guardar-inventario"
+                >
+                    ✓ Guardar cambios
+                </button>
+
+                <a
+                    href="/admin"
+                    class="boton-cancelar-inventario"
+                >
+                    Cancelar
+                </a>
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Panel privado de administración.
+    </p>
+
+</footer>
+
+
+<script>
+
+    function ajustarStock(cantidad) {
+
+        const inputStock =
+            document.getElementById("stock");
+
+        let stockActual =
+            parseInt(inputStock.value) || 0;
+
+        let nuevoStock =
+            stockActual + cantidad;
+
+        if (nuevoStock < 0) {
+            nuevoStock = 0;
+        }
+
+        inputStock.value = nuevoStock;
+
+    }
+
+</script>
+
+
+</body>
+</html>

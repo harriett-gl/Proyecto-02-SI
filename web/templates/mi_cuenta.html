@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Mi cuenta | TechMarket</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='cuenta.css') }}"
+    >
+
+</head>
+
+<body>
+
+<header>
+
+    <a href="/" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/">
+            Inicio
+        </a>
+
+        <a href="/productos">
+            Productos
+        </a>
+
+        <a href="/mis-pedidos">
+            🛍 Mis pedidos
+        </a>
+
+        <a href="/carrito">
+            🛒 Carrito
+        </a>
+
+        <a
+            href="/mi-cuenta"
+            class="nav-activo"
+        >
+            👤 Mi cuenta
+        </a>
+
+        <a href="/logout">
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="cuenta-container">
+
+    <div class="cuenta-titulo">
+
+        <p class="cuenta-etiqueta">
+            TU PERFIL
+        </p>
+
+        <h1>
+            Mi cuenta
+        </h1>
+
+        <p>
+            Administra tus datos personales y
+            consulta el resumen de tus compras.
+        </p>
+
+    </div>
+
+
+    {% if request.args.get('error') %}
+
+        <div class="cuenta-alerta-error">
+            {{ request.args.get('error') }}
+        </div>
+
+    {% endif %}
+
+
+    <section class="perfil-card">
+
+        <div class="perfil-superior">
+
+            <div class="perfil-avatar">
+                {{ cliente.nombre[0]|upper }}
+            </div>
+
+            <div>
+
+                <span class="cuenta-etiqueta">
+                    CLIENTE TECHMARKET
+                </span>
+
+                <h2>
+                    {{ cliente.nombre }}
+                </h2>
+
+                <p>
+                    {{ cliente.correo }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="perfil-datos">
+
+            <div class="dato-cuenta">
+
+                <span>
+                    Nombre
+                </span>
+
+                <strong>
+                    {{ cliente.nombre }}
+                </strong>
+
+            </div>
+
+            <div class="dato-cuenta">
+
+                <span>
+                    Correo electrónico
+                </span>
+
+                <strong>
+                    {{ cliente.correo }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="/mi-cuenta/editar"
+            class="boton-editar-cuenta"
+        >
+            ✎ Editar mis datos
+        </a>
+
+    </section>
+
+
+    <section class="resumen-cuenta">
+
+        <div class="resumen-item">
+
+            <span class="resumen-icono">
+                🛍️
+            </span>
+
+            <strong>
+                {{ cliente.total_pedidos }}
+            </strong>
+
+            <p>
+                Pedidos realizados
+            </p>
+
+        </div>
+
+
+        <div class="resumen-item">
+
+            <span class="resumen-icono">
+                📦
+            </span>
+
+            <strong>
+                {{ cliente.total_productos }}
+            </strong>
+
+            <p>
+                Productos comprados
+            </p>
+
+        </div>
+
+
+        <div class="resumen-item">
+
+            <span class="resumen-icono">
+                ✦
+            </span>
+
+            <strong>
+                Q{{ "%.2f"|format(cliente.total_gastado|float) }}
+            </strong>
+
+            <p>
+                Total en compras
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <section class="acciones-cuenta">
+
+        <a
+            href="/mis-pedidos"
+            class="accion-cuenta"
+        >
+
+            <div class="accion-icono">
+                🛍️
+            </div>
+
+            <div>
+
+                <strong>
+                    Mis pedidos
+                </strong>
+
+                <p>
+                    Consulta el estado de tus compras.
+                </p>
+
+            </div>
+
+            <span>
+                →
+            </span>
+
+        </a>
+
+    </section>
+
+
+    <section class="zona-peligro">
+
+        <div>
+
+            <span class="zona-peligro-etiqueta">
+                ZONA DE CUENTA
+            </span>
+
+            <h2>
+                Eliminar mi cuenta
+            </h2>
+
+            <p>
+                Esta acción solo estará disponible
+                si no existen pedidos activos ni
+                historial de compras asociado.
+            </p>
+
+        </div>
+
+        <form
+            action="/mi-cuenta/eliminar"
+            method="POST"
+            onsubmit="return confirm('¿Seguro que deseas eliminar tu cuenta? Esta acción no se puede deshacer.');"
+        >
+
+            <button
+                type="submit"
+                class="boton-eliminar-cuenta"
+            >
+                Eliminar cuenta
+            </button>
+
+        </form>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Productos tecnológicos y soluciones para ti.
+    </p>
+
+</footer>
+
+</body>
+</html>

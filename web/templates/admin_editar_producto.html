@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Editar {{ producto.nombre }} | TechMarket
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='base.css') }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='admin.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <a href="/admin" class="logo">
+        Tech<span>Market</span>
+    </a>
+
+    <nav>
+
+        <a href="/admin">
+            Administración
+        </a>
+
+        <a href="/admin/productos">
+            Productos
+        </a>
+
+        <a href="/" target="_blank">
+            Ver tienda
+        </a>
+
+        <a
+            href="/admin/logout"
+            class="cerrar-sesion"
+        >
+            Cerrar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="admin-container">
+
+    <a
+        href="/admin/productos"
+        class="volver-admin"
+    >
+        ← Volver a productos
+    </a>
+
+
+    <div class="admin-titulo">
+
+        <p class="admin-etiqueta">
+            EDITAR INFORMACIÓN
+        </p>
+
+        <h1>
+            {{ producto.nombre }}
+        </h1>
+
+        <p>
+            Modifica la información que aparecerá
+            en la página pública del producto.
+        </p>
+
+    </div>
+
+
+    <section class="editar-producto-card editar-producto-simple">
+
+
+        <div class="editar-producto-resumen">
+
+            <div class="editar-producto-icono">
+
+                {% set nombre = producto.nombre|lower %}
+
+                {% if 'monitor' in nombre %}
+
+                    🖥️
+
+                {% elif 'teclado' in nombre %}
+
+                    ⌨️
+
+                {% elif 'audifono' in nombre
+                        or 'audífono' in nombre %}
+
+                    🎧
+
+                {% elif 'mouse' in nombre %}
+
+                    🖱️
+
+                {% elif 'webcam' in nombre
+                        or 'camara' in nombre
+                        or 'cámara' in nombre %}
+
+                    📷
+
+                {% elif 'fuente' in nombre %}
+
+                    🔌
+
+                {% elif 'laptop' in nombre
+                        or 'computadora' in nombre %}
+
+                    💻
+
+                {% elif 'iphone' in nombre
+                        or 'telefono' in nombre
+                        or 'teléfono' in nombre %}
+
+                    📱
+
+                {% else %}
+
+                    📦
+
+                {% endif %}
+
+            </div>
+
+
+            <div>
+
+                <p class="admin-mini-etiqueta">
+                    PRODUCTO #{{ producto.id }}
+                </p>
+
+                <h2>
+                    {{ producto.nombre }}
+                </h2>
+
+                <p>
+                    {{ producto.descripcion }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORMULARIO DE EDICIÓN -->
+
+        <form
+            id="form-editar-producto"
+            action="{{ url_for('admin_editar', id=producto.id) }}"
+            method="POST"
+            class="form-editar-producto"
+        >
+
+            <input
+                type="hidden"
+                name="nombre"
+                value="{{ producto.nombre }}"
+            >
+
+            <input
+                type="hidden"
+                name="descripcion"
+                value="{{ producto.descripcion }}"
+            >
+
+            <input
+                type="hidden"
+                name="precio"
+                value="{{ producto.precio }}"
+            >
+
+            <input
+                type="hidden"
+                name="stock"
+                value="{{ producto.stock }}"
+            >
+
+
+            <div class="campo-editar">
+
+                <label for="detalle_producto">
+                    Descripción completa del producto
+                </label>
+
+                <textarea
+                    id="detalle_producto"
+                    name="detalle_producto"
+                    rows="10"
+                    placeholder="Escribe aquí toda la información que quieres mostrar sobre el producto..."
+                    required
+                >{{ producto.detalle_producto or '' }}</textarea>
+
+            </div>
+
+        </form>
+
+
+        <!-- BOTONES -->
+
+        <div class="acciones-edicion">
+
+            <button
+                type="submit"
+                form="form-editar-producto"
+                name="accion"
+                value="guardar"
+                class="boton-guardar-cambios"
+            >
+                ✓ Guardar cambios
+            </button>
+
+
+            <form
+                action="{{ url_for('admin_eliminar', id=producto.id) }}"
+                method="POST"
+                class="form-eliminar-edicion"
+                onsubmit="return confirm('¿Seguro que deseas eliminar {{ producto.nombre|e }}? Esta acción no se puede deshacer.');"
+            >
+
+                <button
+                    type="submit"
+                    class="boton-eliminar-grande"
+                >
+                    🗑️ Eliminar producto
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <strong>
+        Tech<span>Market</span>
+    </strong>
+
+    <p>
+        Panel privado de administración.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
