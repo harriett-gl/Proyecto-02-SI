@@ -10,6 +10,8 @@ TechMarket simula una tienda de productos tecnológicos utilizando una arquitect
 
 La aplicación fue preparada con Docker para facilitar su despliegue e integración con la infraestructura de seguridad del proyecto.
 
+> **Estado:** módulo de desarrollo finalizado y funcional. La aplicación WEB, la API REST y la base de datos se encuentran preparadas para su integración con el firewall perimetral, WAF, proxy y la segmentación de red del proyecto.
+
 ---
 
 ## 👩🏻‍💻 Desarrollo
@@ -198,6 +200,9 @@ Desde la aplicación se puede:
 - Modificar cantidades.
 - Eliminar productos.
 - Crear pedidos.
+- Consultar el historial y seguimiento de pedidos.
+- Cancelar pedidos pendientes.
+- Consultar y editar la cuenta del cliente.
 
 ---
 
@@ -268,6 +273,11 @@ POST /login
 Los usuarios nuevos son registrados como clientes.
 
 El acceso administrativo depende del rol almacenado para el usuario.
+
+La aplicación diferencia dos perfiles principales:
+
+- **Cliente:** consulta productos, administra su carrito, realiza pedidos, consulta su historial y gestiona su cuenta.
+- **Administrador:** administra productos e inventario, consulta clientes y revisa y gestiona los pedidos registrados.
 
 ---
 
@@ -422,12 +432,16 @@ Durante el desarrollo se comprobaron:
 - Reducción automática del stock.
 - Rechazo de pedidos con stock insuficiente.
 - Ejecución de WEB, API y DB mediante Docker.
+- Flujo completo de compra desde el cliente.
+- Consulta del historial y seguimiento de pedidos.
+- Acceso y funciones diferenciadas para cliente y administrador.
+- Consulta administrativa de clientes, productos y pedidos.
 
 ---
 
-# 🔗 Integración
+# 🔗 Integración con la infraestructura de seguridad
 
-El código desarrollado debe integrarse posteriormente con:
+El módulo desarrollado está preparado para integrarse con:
 
 - Firewall perimetral.
 - WAF.
@@ -435,31 +449,43 @@ El código desarrollado debe integrarse posteriormente con:
 - Máquinas virtuales de empleados.
 - Segmentación WAN / DMZ / LAN.
 
-La integración final será realizada en el entorno preparado por el equipo para la demostración del proyecto.
+La integración final se realizará en el entorno preparado por el equipo para la demostración del proyecto, manteniendo separados los servicios WEB, API y base de datos para aplicar los controles de seguridad correspondientes.
 
 ---
 
-# 👥 Equipo
+# 👥 Equipo y responsabilidades
 
-## Harriett
-Desarrollo de WEB, API REST y base de datos.
-
-## Esly
-Infraestructura virtual, segmentación de red y firewall perimetral.
-
-## José
-WAF, Proxy Squid y controles de seguridad internos.
+| Integrante | Responsabilidad |
+|---|---|
+| **Harriett Guzmán** | Desarrollo de la aplicación WEB, API REST, base de datos, lógica de clientes y administradores, carrito, pedidos e integración mediante Docker. |
+| **Esly** | Infraestructura virtual, segmentación de red y firewall perimetral. |
+| **José** | WAF, Proxy Squid y controles de seguridad internos. |
 
 ---
 
-# ✅ Estado del desarrollo
+# ✅ Estado actual
 
-La parte de desarrollo de TechMarket se considera funcional cuando:
+El módulo desarrollado por Harriett cumple el flujo principal:
 
 ```text
-WEB → API → DB
+Cliente / Administrador
+        │
+        ▼
+       WEB
+        │
+        ▼
+    API REST
+        │
+        ▼
+      MySQL
 ```
 
-opera correctamente y la API permite realizar las operaciones requeridas sobre los datos.
+Se verificó el funcionamiento de la interfaz para clientes y administradores, las operaciones CRUD, autenticación, carrito, pedidos, actualización de inventario y comunicación entre los tres servicios.
 
-**Estado actual: desarrollo funcional y preparado para integración con la infraestructura de seguridad.**
+**Estado actual: desarrollo finalizado, funcional y preparado para la integración con la infraestructura de seguridad del Proyecto 02.**
+
+---
+
+## 📌 Evidencia de desarrollo
+
+El historial del repositorio conserva los commits realizados en la rama de desarrollo, permitiendo identificar los cambios implementados y la documentación final del módulo.
